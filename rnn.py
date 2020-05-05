@@ -2,6 +2,11 @@
 #By Nick Serger
 
 """
+The data file “data.npy” contains a matrix, of 100 rows and 500 columns.
+Each row represents a signal, which contains the superposition of a
+large number (larger than 20) of sinusoids with randomly generated
+amplitudes, frequencies, and phases.
+
 # Project outline:
     import functions
 
@@ -34,12 +39,7 @@ def load_data(data_path):
     return input_data
 
 def split_input_data(input_data):
-    """Returns a train_data and a test_data numpy array
-
-    The input_data is split at 66 because there are supposed to be 66
-    records in the training data set and 34 records in the testing
-    dataset.
-    """
+    """Returns train_data and test_data numpy arrays with 66/34 split"""
     train_data, test_data = np.split(input_data, [66])
     return train_data, test_data
 

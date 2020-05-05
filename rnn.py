@@ -58,10 +58,6 @@ if __name__ == '__main__':
     #Input the data
     data_path = 'data.npy'
     input_data = load_data(data_path)
-    # print(input_data.shape)
 
     #Separate into train and test data
     train_data, test_data = split_input_data(input_data)
-
-    # print(train_data.shape)
-    # print(test_data.shape)

@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 #By Nick Serger
-
 """
 The data file “data.npy” contains a matrix, of 100 rows and 500 columns.
 Each row represents a signal, which contains the superposition of a

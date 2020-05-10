@@ -43,7 +43,20 @@ def split_input_data(input_data, split):
     train_data, test_data = np.split(input_data, [split])
     return train_data, test_data
 
-# TODO: Write a build model function
+def build_rnn_model():
+    """Returns an rnn model that still needs to be compiled"""
+    model = Sequential()
+    # model.add(Embedding(max_features, 100))
+    model.add(LSTM(128, input_shape=(None, 500), 
+        dropout=0.2, recurrent_dropout=0.2))
+    model.add(BatchNormalization())
+    model.add(LSTM(128, dropout=0.2, recurrent_dropout=0.2))
+    model.add(BatchNormalization())
+    model.add(LSTM(128, dropout=0.2, recurrent_dropout=0.2))
+    model.add(Dense(1, activation=None))
+
+    return model
+
 # TODO: Write a compile model function
 
 # TODO: Write a train model function

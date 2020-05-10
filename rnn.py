@@ -38,11 +38,10 @@ def load_data(data_path):
         raise err
     return input_data
 
-def split_input_data(input_data):
+def split_input_data(input_data, split):
     """Returns train_data and test_data numpy arrays with 66/34 split"""
-    train_data, test_data = np.split(input_data, [66])
+    train_data, test_data = np.split(input_data, [split])
     return train_data, test_data
-
 
 # TODO: Write a build model function
 # TODO: Write a compile model function
@@ -60,4 +59,13 @@ if __name__ == '__main__':
     input_data = load_data(data_path)
 
     #Separate into train and test data
-    train_data, test_data = split_input_data(input_data)
+    split = 66
+    train_data, test_data = split_input_data(input_data, split)
+
+    print('Build model...')
+    model = Sequential()
+    # model.add(Embedding(max_features, 100))
+    model.add(LSTM(128, input_shape=(None, 40, 40, 1), 
+        padding='same', dropout=0.2, recurrent_dropout=0.2))
+    model.add(BatchNormalization())
+    model.add(Dense(10, activation='sigmoid'))

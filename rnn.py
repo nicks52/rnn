@@ -56,7 +56,6 @@ def split_input_data(all_data, train_split):
 def build_rnn_model():
     """Returns an rnn model that still needs to be compiled"""
     model = Sequential()
-    # model.add(Embedding(max_features, 100))
     model.add(
         LSTM(64,
              input_shape=(None, 1, 500),

@@ -52,6 +52,17 @@ def split_input_data(all_data, train_split):
     training_data, testing_data = np.split(all_data, [train_split])
     return training_data, testing_data
 
+def split_to_x_y_data(input_data, memory_length):
+    """Returns x and y data based on the input data
+
+    The model should predict the next value of x given x_k which means
+    that y_k = x_{k+1}.
+
+    The model will also add a padding of zeros before x and y equal to
+    memory_length - 1. This is to allow for the model to learn from the
+    entire memory length while training.
+    """
+
 
 def build_rnn_model():
     """Returns an rnn model that still needs to be compiled"""

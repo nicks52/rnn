@@ -85,7 +85,7 @@ def left_pad_array_with_zeros(initial_array, number_of_zeros):
 
 
 def build_rnn_model(memory_length, signal_length):
-    """Returns an rnn model that still needs to be compiled"""
+    """Returns a built and compiled rnn model"""
     model = Sequential()
     model.add(
         LSTM(memory_length,
@@ -100,16 +100,9 @@ def build_rnn_model(memory_length, signal_length):
     model.add(LSTM(memory_length, dropout=0.2, recurrent_dropout=0.2))
     model.add(Dense(1, activation=None))
 
+    model.compile(optimizer="Adam", loss="mse", metrics=["mse"])
+
     return model
-
-
-def compile_rnn_model(built_model):
-    """Returns the compiled model"""
-    compile_model = built_model.compile(
-        loss=tf.keras.losses.MeanSquaredError(),
-        optimizer='adam',
-        metrics=[tf.keras.metrics.MeanSquaredError()])
-    return compile_model
 
 
 def train_rnn_model(compile_model, x_train, y_train, batch_size):
@@ -144,11 +137,14 @@ if __name__ == '__main__':
 
     # Build and compile the model
     built_rnn_model = build_rnn_model(memory_length, x_train.shape[1])
-    compiled_rnn_model = compile_rnn_model(built_rnn_model)
 
-    # # Train the model
-    # batch_size = 20
-    # trained_rnn_model = train_rnn_model(compiled_rnn_model, x_train, y_train)
+    # Train the model
+
+    #TODO: reshape the array to have shape (None, 66, 514) from (66, 514)
+    #TODO: run yapf and pylint
+
+    batch_size = 20
+    trained_rnn_model = train_rnn_model(built_rnn_model, x_train, y_train, batch_size)
 
     # # Test the model
     # test_score, test_accuracy = evaluate_rnn_model(trained_rnn_model, x_test,

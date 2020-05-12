@@ -27,8 +27,7 @@ import numpy as np
 import tensorflow as tf
 
 from keras.models import Sequential
-from keras.layers import Dense, Embedding, BatchNormalization
-from keras.layers import LSTM
+from keras.layers import Dense, LSTM, BatchNormalization
 
 
 def load_data(data_filename):

@@ -57,17 +57,17 @@ def build_rnn_model():
     """Returns an rnn model that still needs to be compiled"""
     model = Sequential()
     model.add(
-        LSTM(64,
+        LSTM(15,
              input_shape=(None, 1, 500),
              dropout=0.2,
              recurrent_dropout=0.2,
              return_sequences=True))
     model.add(BatchNormalization())
     model.add(
-        LSTM(64, dropout=0.2, recurrent_dropout=0.2, return_sequences=True))
+        LSTM(15, dropout=0.2, recurrent_dropout=0.2, return_sequences=True))
     model.add(BatchNormalization())
     model.add(
-        LSTM(64, dropout=0.2, recurrent_dropout=0.2))
+        LSTM(15, dropout=0.2, recurrent_dropout=0.2))
     model.add(Dense(1, activation=None))
 
     return model

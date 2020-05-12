@@ -40,16 +40,20 @@ def load_data(data_filename):
     return loaded_data
 
 
-def split_input_data(input_data, train_split):
-    """Returns train_data and test_data numpy arrays
+def split_input_data(input_data, train_split, memory_length):
+    """Returns x_train, y_train, x_test, y_test numpy arrays
 
     The train and test arrays are separated by the value train_split.
     The value train_split specifies how many samples will be in the
     train_data set and the remaining samples will be in the test_data
     set.
+
+    The train and test arrays are then split into x and y values
     """
     training_data, testing_data = np.split(input_data, [train_split])
-    return training_data, testing_data
+    x_train, y_train = split_to_x_y_data(training_data, memory_length)
+    x_test, y_test = split_to_x_y_data(testing_data, memory_length)
+    return x_train, y_train, x_test, y_test
 
 
 def split_to_x_y_data(given_array, memory_length):

@@ -139,11 +139,12 @@ if __name__ == '__main__':
 
     #Separate into train and test data
     train_test_split = 66
-    train_data, test_data = split_input_data(all_data, train_test_split)
+    memory_length = 15
+    x_train, y_train, x_test, y_test = split_input_data(all_data, train_test_split, memory_length)
 
-    # Build and compile the model
-    built_rnn_model = build_rnn_model()
-    compiled_rnn_model = compile_rnn_model(built_rnn_model)
+    # # Build and compile the model
+    # built_rnn_model = build_rnn_model(memory_length)
+    # compiled_rnn_model = compile_rnn_model(built_rnn_model)
 
     # # Train the model
     # batch_size = 20

@@ -84,20 +84,20 @@ def left_pad_array_with_zeros(initial_array, number_of_zeros):
     return new_array
 
 
-def build_rnn_model():
+def build_rnn_model(memory_length):
     """Returns an rnn model that still needs to be compiled"""
     model = Sequential()
     model.add(
-        LSTM(15,
+        LSTM(memory_length,
              input_shape=(None, 1, 500),
              dropout=0.2,
              recurrent_dropout=0.2,
              return_sequences=True))
     model.add(BatchNormalization())
     model.add(
-        LSTM(15, dropout=0.2, recurrent_dropout=0.2, return_sequences=True))
+        LSTM(memory_length, dropout=0.2, recurrent_dropout=0.2, return_sequences=True))
     model.add(BatchNormalization())
-    model.add(LSTM(15, dropout=0.2, recurrent_dropout=0.2))
+    model.add(LSTM(memory_length, dropout=0.2, recurrent_dropout=0.2))
     model.add(Dense(1, activation=None))
 
     return model

@@ -116,7 +116,7 @@ if __name__ == '__main__':
     compiled_rnn_model = compile_rnn_model(built_rnn_model)
 
     # # Train the model
-    # batch_size = 1
+    # batch_size = 20
     # trained_rnn_model = train_rnn_model(compiled_rnn_model, x_train, y_train)
 
     # # Test the model

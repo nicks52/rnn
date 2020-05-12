@@ -40,7 +40,7 @@ def load_data(data_filename):
     return loaded_data
 
 
-def split_input_data(all_data, train_split):
+def split_input_data(input_data, train_split):
     """Returns train_data and test_data numpy arrays
 
     The train and test arrays are separated by the value train_split.
@@ -48,7 +48,7 @@ def split_input_data(all_data, train_split):
     train_data set and the remaining samples will be in the test_data
     set.
     """
-    training_data, testing_data = np.split(all_data, [train_split])
+    training_data, testing_data = np.split(input_data, [train_split])
     return training_data, testing_data
 
 
@@ -126,11 +126,11 @@ def evaluate_rnn_model(train_model, x_test, y_test, batch_size):
 if __name__ == '__main__':
     #Input the data
     path_to_data_file = 'data.npy'
-    input_data = load_data(path_to_data_file)
+    all_data = load_data(path_to_data_file)
 
     #Separate into train and test data
     train_test_split = 66
-    train_data, test_data = split_input_data(input_data, train_test_split)
+    train_data, test_data = split_input_data(all_data, train_test_split)
 
     # Build and compile the model
     built_rnn_model = build_rnn_model()

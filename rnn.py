@@ -89,8 +89,7 @@ def build_rnn_model():
     model.add(
         LSTM(15, dropout=0.2, recurrent_dropout=0.2, return_sequences=True))
     model.add(BatchNormalization())
-    model.add(
-        LSTM(15, dropout=0.2, recurrent_dropout=0.2))
+    model.add(LSTM(15, dropout=0.2, recurrent_dropout=0.2))
     model.add(Dense(1, activation=None))
 
     return model

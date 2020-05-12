@@ -84,12 +84,12 @@ def left_pad_array_with_zeros(initial_array, number_of_zeros):
     return new_array
 
 
-def build_rnn_model(memory_length):
+def build_rnn_model(memory_length, signal_length):
     """Returns an rnn model that still needs to be compiled"""
     model = Sequential()
     model.add(
         LSTM(memory_length,
-             input_shape=(None, 1, 500),
+             input_shape=(1, signal_length),
              dropout=0.2,
              recurrent_dropout=0.2,
              return_sequences=True))
@@ -142,9 +142,9 @@ if __name__ == '__main__':
     memory_length = 15
     x_train, y_train, x_test, y_test = split_input_data(all_data, train_test_split, memory_length)
 
-    # # Build and compile the model
-    # built_rnn_model = build_rnn_model(memory_length)
-    # compiled_rnn_model = compile_rnn_model(built_rnn_model)
+    # Build and compile the model
+    built_rnn_model = build_rnn_model(memory_length, x_train.shape[1])
+    compiled_rnn_model = compile_rnn_model(built_rnn_model)
 
     # # Train the model
     # batch_size = 20

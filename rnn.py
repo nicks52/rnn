@@ -52,16 +52,21 @@ def split_input_data(input_data, train_split):
     return training_data, testing_data
 
 
-def split_to_x_y_data(input_data, memory_length):
-    """Returns x and y data based on the input data
+def split_to_x_y_data(given_array, memory_length):
+    """Returns x and y data based on the given array
 
     The model should predict the next value of x given x_k which means
-    that y_k = x_{k+1}.
+    that y_k = x_{k+1}. So the data must be divided to follow this
+    requirement.
 
     The model will also add a padding of zeros before x and y equal to
     memory_length - 1. This is to allow for the model to learn from the
     entire memory length while training.
     """
+    zero_pad_array = left_pad_array_with_zeros(given_array, memory_length)
+    x_data = np.delete(zero_pad_array, -1, axis=1)
+    y_data = np.delete(zero_pad_array, 0, axis=1)
+    return x_data, y_data
 
 
 def left_pad_array_with_zeros(initial_array, number_of_zeros):

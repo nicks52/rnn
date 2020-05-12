@@ -52,6 +52,7 @@ def split_input_data(all_data, train_split):
     training_data, testing_data = np.split(all_data, [train_split])
     return training_data, testing_data
 
+
 def split_to_x_y_data(input_data, memory_length):
     """Returns x and y data based on the input data
 
@@ -62,6 +63,17 @@ def split_to_x_y_data(input_data, memory_length):
     memory_length - 1. This is to allow for the model to learn from the
     entire memory length while training.
     """
+
+
+def left_pad_array_with_zeros(initial_array, number_of_zeros):
+    """Returns an array that has been left padded with zeros
+
+    Each array in the 2D array input will be padded with zeros of length
+    number_of_zeros.
+    """
+    zeros_array = np.zeros((initial_array.shape[0]), number_of_zeros)
+    new_array = np.concatenate((zeros_array), axis=1)
+    return new_array
 
 
 def build_rnn_model():

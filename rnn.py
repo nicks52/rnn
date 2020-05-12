@@ -79,8 +79,8 @@ def left_pad_array_with_zeros(initial_array, number_of_zeros):
     Each array in the 2D array input will be padded with zeros of length
     number_of_zeros.
     """
-    zeros_array = np.zeros((initial_array.shape[0]), number_of_zeros)
-    new_array = np.concatenate((zeros_array), axis=1)
+    zeros_array = np.zeros((initial_array.shape[0], number_of_zeros))
+    new_array = np.concatenate((zeros_array, initial_array), axis=1)
     return new_array
 
 

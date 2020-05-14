@@ -70,7 +70,11 @@ def split_to_x_y_data(given_array, memory_length):
     zero_pad_array = left_pad_array_with_zeros(given_array, memory_length)
     x_data = np.delete(zero_pad_array, -1, axis=1)
     y_data = np.delete(zero_pad_array, 0, axis=1)
-    return x_data, y_data
+
+    # Reshaping x_data to run through LSTM model
+    x_data_reshape = np.reshape(x_data, (x_data.shape[0], 1, x_data.shape[1]))
+
+    return x_data_reshape, y_data
 
 
 def left_pad_array_with_zeros(initial_array, number_of_zeros):

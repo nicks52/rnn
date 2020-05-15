@@ -142,7 +142,7 @@ if __name__ == '__main__':
 
     # Build and compile the model
     built_rnn_model = build_rnn_model(memory_length, x_train.shape[1])
-
+    print(built_rnn_model.summary())
     # Train the model
 
     #TODO: reshape the array to have shape (None, 66, 514) from (66, 514)

@@ -75,7 +75,8 @@ def build_rnn_model(memory_length,
                     rnn_layer='LSTM',
                     dropout=0.0,
                     activation='tanh',
-                    batch_norm=True):
+                    batch_norm=True,
+                    optimizer='adam'):
     """Returns a built and compiled rnn model"""
 
     if rnn_layer == 'LSTM':
@@ -157,7 +158,7 @@ def build_rnn_model(memory_length,
                       return_sequences=True))
         model.add(Dense(1, activation=None))
 
-    model.compile(optimizer="Adam", loss="mse", metrics=["mse"])
+    model.compile(optimizer=optimizer, loss="mse", metrics=["mse"])
 
     return model
 
@@ -350,7 +351,31 @@ if __name__ == '__main__':
     # # Generate plot comparison for the models
     # plot_comparison(histories, names, title)
 
-    # Test using and not using batch normalization
+    # # Test using and not using batch normalization
+    # histories = []
+    # names = []
+    # epochs = 100
+    # batch_size = 5
+    # memory_length = 15
+    # rnn_layer = 'GRU'
+    # dropout = 0.0
+    # activation_function = 'tanh'
+
+    # use_batch_norm = [True, False]
+    # for batch_norm in use_batch_norm:
+    #     built_rnn_model = build_rnn_model(memory_length, rnn_layer, dropout,
+    #                                       activation_function, batch_norm)
+    #     rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+    #                                         batch_size, epochs)
+    #     histories.append(rnn_model_history)
+    # names = ['With Batch Normalization', 'Without Batch Normalization']
+
+    # title = 'Evaluation of Batch Normalization on Model Performance'
+
+    # # Generate plot comparison for the models
+    # plot_comparison(histories, names, title)
+
+    # Test different optimizers
     histories = []
     names = []
     epochs = 100
@@ -359,17 +384,18 @@ if __name__ == '__main__':
     rnn_layer = 'GRU'
     dropout = 0.0
     activation_function = 'tanh'
+    batch_norm = False
 
-    use_batch_norm = [True, False]
-    for batch_norm in use_batch_norm:
+    optimizers = ['adam', 'sgd', 'rmsprop', 'adadelta', 'nadam']
+    for optimizer in optimizers:
         built_rnn_model = build_rnn_model(memory_length, rnn_layer, dropout,
-                                          activation_function, batch_norm)
+                                          activation_function, batch_norm, optimizer)
         rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
                                             batch_size, epochs)
         histories.append(rnn_model_history)
-    names = ['With Batch Normalization', 'Without Batch Normalization']
+        names.append('{}'.format(optimizer))
 
-    title = 'Evaluation of Batch Normalization on Model Performance'
+    title = 'Evaluation of Different Optimizers on Model Performance'
 
     # Generate plot comparison for the models
     plot_comparison(histories, names, title)

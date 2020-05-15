@@ -10,7 +10,7 @@ To test:
     - using LSTM vs GRU vs SimpleRNN
     - using dropout, using recurrent dropout
     - rerun memory length
-    using different activation functions
+    - using different activation functions
     no BatchNormalization
     using different optimizers
 """
@@ -71,7 +71,10 @@ def split_to_x_y_data(given_array):
     return x_data, y_data
 
 
-def build_rnn_model(memory_length, rnn_layer='LSTM', dropout=0.0, activation='tanh'):
+def build_rnn_model(memory_length,
+                    rnn_layer='LSTM',
+                    dropout=0.0,
+                    activation='tanh'):
     """Returns a built and compiled rnn model"""
 
     if rnn_layer == 'LSTM':
@@ -328,7 +331,8 @@ if __name__ == '__main__':
 
     activation_functions = ['tanh', 'relu', 'sigmoid']
     for activation_function in activation_functions:
-        built_rnn_model = build_rnn_model(memory_length, rnn_layer, dropout, activation_function)
+        built_rnn_model = build_rnn_model(memory_length, rnn_layer, dropout,
+                                          activation_function)
         rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
                                             batch_size, epochs)
         histories.append(rnn_model_history)

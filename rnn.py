@@ -15,6 +15,7 @@ from keras.layers import Dense, LSTM, BatchNormalization
 
 from sklearn.preprocessing import StandardScaler
 
+
 def load_data(data_filename):
     """Returns the input data from the file data.npy as a numpy array"""
     try:
@@ -56,18 +57,15 @@ def split_to_x_y_data(given_array, memory_length):
     """
 
     reshaped_array = np.expand_dims(given_array, axis=2)
-    x_data = reshaped_array[:,:-1,:]
-    y_data = reshaped_array[:,1:,:]
+    x_data = reshaped_array[:, :-1, :]
+    y_data = reshaped_array[:, 1:, :]
     return x_data, y_data
 
 
 def build_rnn_model(memory_length):
     """Returns a built and compiled rnn model"""
     model = Sequential()
-    model.add(
-        LSTM(memory_length,
-             input_shape=(499, 1),
-             return_sequences=True))
+    model.add(LSTM(memory_length, input_shape=(499, 1), return_sequences=True))
     model.add(BatchNormalization())
     model.add(LSTM(memory_length, return_sequences=True))
     model.add(BatchNormalization())
@@ -106,26 +104,23 @@ def plot_comparison(hist1, hist2):
     The first plot compares the training mean squared error (MSE) of the
     two models. And the second plot compares the validation mean squared
     error.
-
-    Arguments:
-      hist1: History object, the history for model1
-      hist2: History object, the history for model2
-
-    Results:
-      One plot of the training MSE and one plot of the validation MSE.
     """
     fig, ax = plt.subplots(1, 2)
 
-    ax[0].plot(hist1.history['mse'], label = 'Base Model train', color = 'orange')
-    ax[0].plot(hist2.history['mse'], label = 'Updated Model train', color = 'r')
+    ax[0].plot(hist1.history['mse'], label='Base Model train', color='orange')
+    ax[0].plot(hist2.history['mse'], label='Updated Model train', color='r')
     ax[0].set_title('Training MSE for Base Model and Updated Model')
     ax[0].set_ylabel('MSE')
     ax[0].set_xlabel('epoch')
     ax[0].ticklabel_format(useOffset=False)
     ax[0].legend()
 
-    ax[1].plot(hist1.history['val_mse'], label = 'Base Model validation', color = 'orange')
-    ax[1].plot(hist2.history['val_mse'], label = 'Updated Model validation', color = 'r')
+    ax[1].plot(hist1.history['val_mse'],
+               label='Base Model validation',
+               color='orange')
+    ax[1].plot(hist2.history['val_mse'],
+               label='Updated Model validation',
+               color='r')
     ax[1].set_title('Validation MSE for Base Model and Updated Model')
     ax[1].set_ylabel('Validation MSE')
     ax[1].set_xlabel('epoch')

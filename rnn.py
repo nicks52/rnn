@@ -92,12 +92,12 @@ def build_rnn_model(memory_length):
     return model
 
 
-def train_rnn_model(compile_model, x_train, y_train, batch_size):
+def train_rnn_model(compile_model, x_train, y_train, batch_size, epochs):
     """Returns model trained on x_train and y_train data"""
     train_model = compile_model.fit(x_train,
                                     y_train,
                                     batch_size=batch_size,
-                                    epochs=15,
+                                    epochs=epochs,
                                     validation_split=0.2)
 
     return train_model
@@ -129,8 +129,9 @@ if __name__ == '__main__':
 
     # Train the model
     batch_size = 20
+    epochs = 15
     trained_rnn_model = train_rnn_model(built_rnn_model, x_train, y_train,
-                                        batch_size)
+                                        batch_size, epochs)
 
     # # Test the model
     # test_score, test_accuracy = evaluate_rnn_model(built_rnn_model, x_test,

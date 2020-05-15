@@ -5,26 +5,9 @@ The data file “data.npy” contains a matrix, of 100 rows and 500 columns.
 Each row represents a signal, which contains the superposition of a
 large number (larger than 20) of sinusoids with randomly generated
 amplitudes, frequencies, and phases.
-
-# Project outline:
-    import functions
-
-    load data
-    divide data into train and test data
-
-    build model
-    compile model
-
-    train model
-    validate model
-
-    predict next value
-
-    test model
 """
 
 import numpy as np
-import tensorflow as tf
 
 from keras.models import Sequential
 from keras.layers import Dense, LSTM, BatchNormalization
@@ -99,8 +82,7 @@ def build_rnn_model(memory_length):
              input_shape=input_signal_shape,
              return_sequences=True))
     model.add(BatchNormalization())
-    model.add(
-        LSTM(memory_length, return_sequences=True))
+    model.add(LSTM(memory_length, return_sequences=True))
     model.add(BatchNormalization())
     model.add(LSTM(memory_length))
     model.add(Dense(514))
@@ -138,22 +120,21 @@ if __name__ == '__main__':
     #Separate into train and test data
     train_test_split = 66
     memory_length = 15
-    x_train, y_train, x_test, y_test = split_input_data(all_data, train_test_split, memory_length)
+    x_train, y_train, x_test, y_test = split_input_data(
+        all_data, train_test_split, memory_length)
 
     # Build and compile the model
-    built_rnn_model = build_rnn_model(memory_length, x_train.shape[1])
+    built_rnn_model = build_rnn_model(memory_length)
     print(built_rnn_model.summary())
+
     # Train the model
-
-    #TODO: reshape the array to have shape (None, 66, 514) from (66, 514)
-    #TODO: run yapf and pylint
-
     batch_size = 20
-    trained_rnn_model = train_rnn_model(built_rnn_model, x_train, y_train, batch_size)
+    trained_rnn_model = train_rnn_model(built_rnn_model, x_train, y_train,
+                                        batch_size)
 
     # # Test the model
-    test_score, test_accuracy = evaluate_rnn_model(built_rnn_model, x_test,
-                                                   y_test, batch_size)
+    # test_score, test_accuracy = evaluate_rnn_model(built_rnn_model, x_test,
+    #                                                y_test, batch_size)
 
-    print('Test score:', test_score)
-    print('Test accuracy:', test_accuracy)
+    # print('Test score:', test_score)
+    # print('Test accuracy:', test_accuracy)

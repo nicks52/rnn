@@ -152,8 +152,8 @@ if __name__ == '__main__':
     trained_rnn_model = train_rnn_model(built_rnn_model, x_train, y_train, batch_size)
 
     # # Test the model
-    # test_score, test_accuracy = evaluate_rnn_model(trained_rnn_model, x_test,
-    #                                                y_test, batch_size)
+    test_score, test_accuracy = evaluate_rnn_model(built_rnn_model, x_test,
+                                                   y_test, batch_size)
 
-    # print('Test score:', test_score)
-    # print('Test accuracy:', test_accuracy)
+    print('Test score:', test_score)
+    print('Test accuracy:', test_accuracy)

@@ -191,8 +191,7 @@ def plot_comparison(histories, names, title):
         ax[0].set_xlabel('epoch')
         ax[0].ticklabel_format(useOffset=False)
 
-
-        if not names: # If names is empty
+        if not names:  # If names is empty
             ax[1].plot(history.history['val_mse'])
         else:
             ax[1].plot(history.history['val_mse'], label=names[index])
@@ -245,27 +244,50 @@ if __name__ == '__main__':
     #                                     batch_size, epochs)
     # plot_comparison([rnn_model_history], [], 'Evaluation of Training for 1,000 Epochs')
 
-    # Test RNN layers
+    # # Test RNN layers
+    # histories = []
+    # names = []
+    # epochs = 100
+    # batch_size = 5
+    # memory_length = 15
+
+    # rnn_layers = ['LSTM', 'GRU', 'SimpleRNN']
+    # for rnn_layer in rnn_layers:
+    #     built_rnn_model = build_rnn_model(memory_length, rnn_layer)
+    #     rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+    #                                         batch_size, epochs)
+    #     histories.append(rnn_model_history)
+    #     names.append(rnn_layer)
+
+    # title = 'Evaluation of Different RNN Layers on Model Performance'
+
+    # # Generate plot comparison for the models
+    # plot_comparison(histories, names, title)
+
+    # Test RNN layers with and without dropout
     histories = []
     names = []
     epochs = 100
     batch_size = 5
     memory_length = 15
+    title = 'Evaluation of Different RNN Layers With and Without Dropout on Model Performance'
 
     rnn_layers = ['LSTM', 'GRU', 'SimpleRNN']
+    dropout_values = [0.0, 0.2]
     for rnn_layer in rnn_layers:
-        built_rnn_model = build_rnn_model(memory_length, rnn_layer)
-        rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
-                                            batch_size, epochs)
-        histories.append(rnn_model_history)
-        names.append(rnn_layer)
+        for dropout in dropout_values:
+            built_rnn_model = build_rnn_model(memory_length, rnn_layer,
+                                              dropout)
+            rnn_model_history = train_rnn_model(built_rnn_model, x_train,
+                                                y_train, batch_size, epochs)
+            histories.append(rnn_model_history)
+            names.append('{}, dropout: {}'.format(rnn_layer, dropout))
+            # plot_comparison(histories, names, title)
 
-    title = 'Evaluation of Different RNN Layers on Model Performance'
+    title = 'Evaluation of Different RNN Layers With and Without Dropout on Model Performance'
 
     # Generate plot comparison for the models
     plot_comparison(histories, names, title)
-
-
 
     # # Test memory_length
     # histories = []
@@ -285,7 +307,6 @@ if __name__ == '__main__':
 
     # # Generate plot comparison for the models
     # plot_comparison(histories, names, title)
-
 
     # # Test the model
     # test_score, test_accuracy = evaluate_rnn_model(built_rnn_model, x_test,

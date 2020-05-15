@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 from keras.models import Sequential
 from keras.layers import Dense, LSTM, BatchNormalization
 
+from sklearn.preprocessing import StandardScaler
 
 def load_data(data_filename):
     """Returns the input data from the file data.npy as a numpy array"""
@@ -21,7 +22,9 @@ def load_data(data_filename):
     except FileNotFoundError as err:
         print('data.npy file was not found at path {}'.format(data_filename))
         raise err
-    return loaded_data
+    scaler = StandardScaler()
+    standardized_data = scaler.fit_transform(loaded_data)
+    return standardized_data
 
 
 def split_input_data(input_data, train_split, memory_length):

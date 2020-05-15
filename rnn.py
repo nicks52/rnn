@@ -106,7 +106,7 @@ def plot_comparison(hist1, hist2):
     error.
     """
     fig, ax = plt.subplots(1, 2)
-
+    fig.suptitle(title)
     ax[0].plot(hist1.history['mse'], label='Base Model train', color='orange')
     ax[0].plot(hist2.history['mse'], label='Updated Model train', color='r')
     ax[0].set_title('Training MSE for Base Model and Updated Model')
@@ -150,6 +150,9 @@ if __name__ == '__main__':
     epochs = 100
     rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
                                         batch_size, epochs)
+
+
+
 
     # Generate plot comparison for two models
     plot_comparison(rnn_model_history, rnn_model_history)

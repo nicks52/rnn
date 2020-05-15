@@ -64,39 +64,78 @@ def split_to_x_y_data(given_array):
     memory_length - 1. This is to allow for the model to learn from the
     entire memory length while training.
     """
-
+    # Reshape array to size (100, 500, 1), (66, 500, 1), or (34, 500, 1)
     reshaped_array = np.expand_dims(given_array, axis=2)
     x_data = reshaped_array[:, :-1, :]
     y_data = reshaped_array[:, 1:, :]
     return x_data, y_data
 
 
-def build_rnn_model(memory_length, rnn_layer='LSTM'):
+def build_rnn_model(memory_length, rnn_layer='LSTM', dropout=0.0):
     """Returns a built and compiled rnn model"""
 
     if rnn_layer == 'LSTM':
         model = Sequential()
-        model.add(LSTM(memory_length, input_shape=(499, 1), return_sequences=True))
+        model.add(
+            LSTM(memory_length,
+                 input_shape=(499, 1),
+                 dropout=dropout,
+                 recurrent_dropout=dropout,
+                 return_sequences=True))
         model.add(BatchNormalization())
-        model.add(LSTM(memory_length, return_sequences=True))
+        model.add(
+            LSTM(memory_length,
+                 dropout=dropout,
+                 recurrent_dropout=dropout,
+                 return_sequences=True))
         model.add(BatchNormalization())
-        model.add(LSTM(memory_length, return_sequences=True))
+        model.add(
+            LSTM(memory_length,
+                 dropout=dropout,
+                 recurrent_dropout=dropout,
+                 return_sequences=True))
         model.add(Dense(1, activation=None))
     elif rnn_layer == 'GRU':
         model = Sequential()
-        model.add(GRU(memory_length, input_shape=(499, 1), return_sequences=True))
+        model.add(
+            GRU(memory_length,
+                input_shape=(499, 1),
+                dropout=dropout,
+                recurrent_dropout=dropout,
+                return_sequences=True))
         model.add(BatchNormalization())
-        model.add(GRU(memory_length, return_sequences=True))
+        model.add(
+            GRU(memory_length,
+                dropout=dropout,
+                recurrent_dropout=dropout,
+                return_sequences=True))
         model.add(BatchNormalization())
-        model.add(GRU(memory_length, return_sequences=True))
+        model.add(
+            GRU(memory_length,
+                dropout=dropout,
+                recurrent_dropout=dropout,
+                return_sequences=True))
         model.add(Dense(1, activation=None))
     else:
         model = Sequential()
-        model.add(SimpleRNN(memory_length, input_shape=(499, 1), return_sequences=True))
+        model.add(
+            SimpleRNN(memory_length,
+                      input_shape=(499, 1),
+                      dropout=dropout,
+                      recurrent_dropout=dropout,
+                      return_sequences=True))
         model.add(BatchNormalization())
-        model.add(SimpleRNN(memory_length, return_sequences=True))
+        model.add(
+            SimpleRNN(memory_length,
+                      dropout=dropout,
+                      recurrent_dropout=dropout,
+                      return_sequences=True))
         model.add(BatchNormalization())
-        model.add(SimpleRNN(memory_length, return_sequences=True))
+        model.add(
+            SimpleRNN(memory_length,
+                      dropout=dropout,
+                      recurrent_dropout=dropout,
+                      return_sequences=True))
         model.add(Dense(1, activation=None))
 
     model.compile(optimizer="Adam", loss="mse", metrics=["mse"])

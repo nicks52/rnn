@@ -97,7 +97,7 @@ def evaluate_rnn_model(train_model, x_test, y_test, batch_size):
     return score, accuracy
 
 
-def plot_comparison(hist1, hist2):
+def plot_comparison(histories, names, title):
     """
     Generate two plots to compare two RNN models.
 
@@ -107,25 +107,21 @@ def plot_comparison(hist1, hist2):
     """
     fig, ax = plt.subplots(1, 2)
     fig.suptitle(title)
-    ax[0].plot(hist1.history['mse'], label='Base Model train', color='orange')
-    ax[0].plot(hist2.history['mse'], label='Updated Model train', color='r')
-    ax[0].set_title('Training MSE for Base Model and Updated Model')
-    ax[0].set_ylabel('MSE')
-    ax[0].set_xlabel('epoch')
-    ax[0].ticklabel_format(useOffset=False)
-    ax[0].legend()
 
-    ax[1].plot(hist1.history['val_mse'],
-               label='Base Model validation',
-               color='orange')
-    ax[1].plot(hist2.history['val_mse'],
-               label='Updated Model validation',
-               color='r')
-    ax[1].set_title('Validation MSE for Base Model and Updated Model')
-    ax[1].set_ylabel('Validation MSE')
-    ax[1].set_xlabel('epoch')
-    ax[1].ticklabel_format(useOffset=False)
-    ax[1].legend()
+    for index, history in enumerate(histories):
+        ax[0].plot(history.history['mse'], label=names[index])
+        ax[0].set_title('Training MSE')
+        ax[0].set_ylabel('MSE')
+        ax[0].set_xlabel('epoch')
+        ax[0].ticklabel_format(useOffset=False)
+        ax[0].legend()
+
+        ax[1].plot(history.history['val_mse'], label=names[index])
+        ax[1].set_title('Validation MSE')
+        ax[1].set_ylabel('Validation MSE')
+        ax[1].set_xlabel('epoch')
+        ax[1].ticklabel_format(useOffset=False)
+        ax[1].legend()
 
     plt.show()
 
@@ -141,21 +137,32 @@ if __name__ == '__main__':
     x_train, y_train, x_test, y_test = split_input_data(
         all_data, train_test_split, memory_length)
 
-    # Build and compile the model
-    built_rnn_model = build_rnn_model(memory_length)
-    print(built_rnn_model.summary())
+    # # Build and compile the model
+    # built_rnn_model = build_rnn_model(memory_length)
+    # print(built_rnn_model.summary())
 
-    # Train the model
-    batch_size = 20
+    # # Train the model
+    # batch_size = 20
+    # epochs = 100
+    # rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+    #                                     batch_size, epochs)
+
+    histories = []
+    names = []
     epochs = 100
-    rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
-                                        batch_size, epochs)
 
+    batch_sizes = [30, 20, 10, 5, 1]
+    for batch in batch_sizes:
+        built_rnn_model = build_rnn_model(memory_length)
+        rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+                                        batch, epochs)
+        histories.append(rnn_model_history)
+        names.append('Batch size: {}'.format(batch))
 
-
+    title = 'Evaluation of Batch Size on Model Performance'
 
     # Generate plot comparison for two models
-    plot_comparison(rnn_model_history, rnn_model_history)
+    plot_comparison(histories, names, title)
 
     # # Test the model
     # test_score, test_accuracy = evaluate_rnn_model(built_rnn_model, x_test,

@@ -115,19 +115,26 @@ def plot_comparison(histories, names, title):
     fig.suptitle(title)
 
     for index, history in enumerate(histories):
-        ax[0].plot(history.history['mse'], label=names[index])
+        if not names:
+            ax[0].plot(history.history['mse'])
+        else:
+            ax[0].plot(history.history['mse'], label=names[index])
+            ax[0].legend()
         ax[0].set_title('Training MSE')
         ax[0].set_ylabel('MSE')
         ax[0].set_xlabel('epoch')
         ax[0].ticklabel_format(useOffset=False)
-        ax[0].legend()
 
-        ax[1].plot(history.history['val_mse'], label=names[index])
+
+        if not names: # If names is empty
+            ax[1].plot(history.history['val_mse'])
+        else:
+            ax[1].plot(history.history['val_mse'], label=names[index])
+            ax[1].legend()
         ax[1].set_title('Validation MSE')
         ax[1].set_ylabel('Validation MSE')
         ax[1].set_xlabel('epoch')
         ax[1].ticklabel_format(useOffset=False)
-        ax[1].legend()
 
     plt.show()
 

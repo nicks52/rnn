@@ -217,16 +217,15 @@ if __name__ == '__main__':
     rnn_layers = ['LSTM', 'GRU', 'SimpleRNN']
     for rnn_layer in rnn_layers:
         built_rnn_model = build_rnn_model(memory_length, rnn_layer)
-        print(built_rnn_model.summary())
-    #     rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
-    #                                         batch_size, epochs)
-    #     histories.append(rnn_model_history)
-    #     names.append('Memory Length: {}'.format(memory_length))
+        rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+                                            batch_size, epochs)
+        histories.append(rnn_model_history)
+        names.append(rnn_layer)
 
-    # title = 'Evaluation of Memory Length on Model Performance'
+    title = 'Evaluation of Different RNN Layers on Model Performance'
 
-    # # Generate plot comparison for the models
-    # plot_comparison(histories, names, title)
+    # Generate plot comparison for the models
+    plot_comparison(histories, names, title)
 
 
 

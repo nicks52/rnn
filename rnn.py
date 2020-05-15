@@ -5,13 +5,23 @@ The data file “data.npy” contains a matrix, of 100 rows and 500 columns.
 Each row represents a signal, which contains the superposition of a
 large number (larger than 20) of sinusoids with randomly generated
 amplitudes, frequencies, and phases.
+
+To test:
+    using LSTM vs GRU vs SimpleRNN
+    rerun memory length
+    using dropout, using recurrent dropout
+    using different activation functions
+    no BatchNormalization
+    using different optimizers
+
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
 
 from keras.models import Sequential
-from keras.layers import Dense, LSTM, BatchNormalization
+from keras.layers import Dense, BatchNormalization
+from keras.layers import LSTM, GRU, SimpleRNN
 
 from sklearn.preprocessing import StandardScaler
 

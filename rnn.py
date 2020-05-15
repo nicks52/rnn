@@ -54,14 +54,18 @@ def split_to_x_y_data(given_array, memory_length):
     memory_length - 1. This is to allow for the model to learn from the
     entire memory length while training.
     """
-    zero_pad_array = left_pad_array_with_zeros(given_array, memory_length)
-    x_data = np.delete(zero_pad_array, -1, axis=1)
-    y_data = np.delete(zero_pad_array, 0, axis=1)
 
-    # Reshaping x_data to run through LSTM model
-    x_data_reshape = np.reshape(x_data, (x_data.shape[0], 1, x_data.shape[1]))
+    reshaped_array = np.expand_dims(given_array, axis=2)
+    x_data = reshaped_array[:,:-1,:]
+    y_data = reshaped_array[:,1:,:]
+    # zero_pad_array = left_pad_array_with_zeros(given_array, memory_length)
+    # x_data = np.delete(zero_pad_array, -1, axis=1)
+    # y_data = np.delete(zero_pad_array, 0, axis=1)
 
-    return x_data_reshape, y_data
+    # # Reshaping x_data to run through LSTM model
+    # x_data_reshape = np.reshape(x_data, (x_data.shape[0], 1, x_data.shape[1]))
+
+    return x_data, y_data
 
 
 def left_pad_array_with_zeros(initial_array, number_of_zeros):
@@ -77,19 +81,16 @@ def left_pad_array_with_zeros(initial_array, number_of_zeros):
 
 def build_rnn_model(memory_length):
     """Returns a built and compiled rnn model"""
-    samples_per_signal = 500 - 1 + memory_length
-    input_signal_shape = (1, samples_per_signal)
-
     model = Sequential()
     model.add(
         LSTM(memory_length,
-             input_shape=input_signal_shape,
+             input_shape=(499, 1),
              return_sequences=True))
     model.add(BatchNormalization())
     model.add(LSTM(memory_length, return_sequences=True))
     model.add(BatchNormalization())
-    model.add(LSTM(memory_length))
-    model.add(Dense(514, activation=None))
+    model.add(LSTM(memory_length, return_sequences=True))
+    model.add(Dense(1, activation=None))
 
     model.compile(optimizer="Adam", loss="mse", metrics=["mse"])
 
@@ -169,7 +170,7 @@ if __name__ == '__main__':
 
     # Train the model
     batch_size = 20
-    epochs = 10000
+    epochs = 100
     rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
                                         batch_size, epochs)
 

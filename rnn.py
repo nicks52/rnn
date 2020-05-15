@@ -8,6 +8,7 @@ amplitudes, frequencies, and phases.
 """
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 from keras.models import Sequential
 from keras.layers import Dense, LSTM, BatchNormalization

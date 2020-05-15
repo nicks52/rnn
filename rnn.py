@@ -113,6 +113,42 @@ def evaluate_rnn_model(train_model, x_test, y_test, batch_size):
     return score, accuracy
 
 
+def plot_comparison(hist1, hist2):
+    """
+    Generate two plots to compare two RNN models.
+
+    The first plot compares the training mean squared error (MSE) of the
+    two models. And the second plot compares the validation mean squared
+    error.
+
+    Arguments:
+      hist1: History object, the history for model1
+      hist2: History object, the history for model2
+
+    Results:
+      One plot of the training MSE and one plot of the validation MSE.
+    """
+    fig, ax = plt.subplots(1, 2)
+
+    ax[0].plot(hist1.history['mse'], label = 'Base Model train', color = 'orange')
+    ax[0].plot(hist2.history['mse'], label = 'Updated Model train', color = 'r')
+    ax[0].set_title('Training MSE for Base Model and Updated Model')
+    ax[0].set_ylabel('MSE')
+    ax[0].set_xlabel('epoch')
+    ax[0].ticklabel_format(useOffset=False)
+    ax[0].legend()
+
+    ax[1].plot(hist1.history['val_mse'], label = 'Base Model validation', color = 'orange')
+    ax[1].plot(hist2.history['val_mse'], label = 'Updated Model validation', color = 'r')
+    ax[1].set_title('Validation MSE for Base Model and Updated Model')
+    ax[1].set_ylabel('MSE')
+    ax[1].set_xlabel('epoch')
+    ax[1].ticklabel_format(useOffset=False)
+    ax[1].legend()
+
+    plt.show()
+
+
 if __name__ == '__main__':
     #Input the data
     path_to_data_file = 'data.npy'
@@ -131,8 +167,13 @@ if __name__ == '__main__':
     # Train the model
     batch_size = 20
     epochs = 15
-    trained_rnn_model = train_rnn_model(built_rnn_model, x_train, y_train,
+    rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
                                         batch_size, epochs)
+
+    print(rnn_model_history.history)
+
+    # Generate plot comparison for two models
+    plot_comparison(rnn_model_history, rnn_model_history)
 
     # # Test the model
     # test_score, test_accuracy = evaluate_rnn_model(built_rnn_model, x_test,

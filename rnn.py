@@ -144,7 +144,7 @@ def plot_comparison(hist1, hist2):
     ax[1].plot(hist1.history['val_mse'], label = 'Base Model validation', color = 'orange')
     ax[1].plot(hist2.history['val_mse'], label = 'Updated Model validation', color = 'r')
     ax[1].set_title('Validation MSE for Base Model and Updated Model')
-    ax[1].set_ylabel('MSE')
+    ax[1].set_ylabel('Validation MSE')
     ax[1].set_xlabel('epoch')
     ax[1].ticklabel_format(useOffset=False)
     ax[1].legend()

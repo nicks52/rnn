@@ -86,7 +86,7 @@ def build_rnn_model(memory_length):
     model.add(LSTM(memory_length, return_sequences=True))
     model.add(BatchNormalization())
     model.add(LSTM(memory_length))
-    model.add(Dense(514))
+    model.add(Dense(514, activation=None))
 
     model.compile(optimizer="Adam", loss="mse", metrics=["mse"])
 
@@ -169,8 +169,6 @@ if __name__ == '__main__':
     epochs = 15
     rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
                                         batch_size, epochs)
-
-    print(rnn_model_history.history)
 
     # Generate plot comparison for two models
     plot_comparison(rnn_model_history, rnn_model_history)

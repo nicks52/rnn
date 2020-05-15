@@ -88,21 +88,22 @@ def left_pad_array_with_zeros(initial_array, number_of_zeros):
     return new_array
 
 
-def build_rnn_model(memory_length, signal_length):
+def build_rnn_model(memory_length):
     """Returns a built and compiled rnn model"""
+    samples_per_signal = 500 - 1 + memory_length
+    input_signal_shape = (1, samples_per_signal)
+
     model = Sequential()
     model.add(
         LSTM(memory_length,
-             input_shape=(1, signal_length),
-             dropout=0.2,
-             recurrent_dropout=0.2,
+             input_shape=input_signal_shape,
              return_sequences=True))
     model.add(BatchNormalization())
     model.add(
-        LSTM(memory_length, dropout=0.2, recurrent_dropout=0.2, return_sequences=True))
+        LSTM(memory_length, return_sequences=True))
     model.add(BatchNormalization())
-    model.add(LSTM(memory_length, dropout=0.2, recurrent_dropout=0.2))
-    model.add(Dense(1, activation=None))
+    model.add(LSTM(memory_length))
+    model.add(Dense(514))
 
     model.compile(optimizer="Adam", loss="mse", metrics=["mse"])
 

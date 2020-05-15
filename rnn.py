@@ -11,7 +11,7 @@ To test:
     - using dropout, using recurrent dropout
     - rerun memory length
     - using different activation functions
-    no BatchNormalization
+    - no BatchNormalization
     using different optimizers
 """
 
@@ -320,7 +320,30 @@ if __name__ == '__main__':
     # # Generate plot comparison for the models
     # plot_comparison(histories, names, title)
 
-    # Test memory_length
+    # # Test different activation functions
+    # histories = []
+    # names = []
+    # epochs = 100
+    # batch_size = 5
+    # memory_length = 15
+    # rnn_layer = 'GRU'
+    # dropout = 0.0
+
+    # activation_functions = ['tanh', 'relu', 'sigmoid']
+    # for activation_function in activation_functions:
+    #     built_rnn_model = build_rnn_model(memory_length, rnn_layer, dropout,
+    #                                       activation_function)
+    #     rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+    #                                         batch_size, epochs)
+    #     histories.append(rnn_model_history)
+    #     names.append('{}'.format(activation_function))
+
+    # title = 'Evaluation of Different Activation Functions on Model Performance'
+
+    # # Generate plot comparison for the models
+    # plot_comparison(histories, names, title)
+
+    # Test using and not using batch normalization
     histories = []
     names = []
     epochs = 100
@@ -328,17 +351,18 @@ if __name__ == '__main__':
     memory_length = 15
     rnn_layer = 'GRU'
     dropout = 0.0
+    activation_function = 'tanh'
 
-    activation_functions = ['tanh', 'relu', 'sigmoid']
-    for activation_function in activation_functions:
+    use_batch_norm = [True, False]
+    for batch_norm in use_batch_norm:
         built_rnn_model = build_rnn_model(memory_length, rnn_layer, dropout,
-                                          activation_function)
+                                          activation_function, batch_norm)
         rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
                                             batch_size, epochs)
         histories.append(rnn_model_history)
-        names.append('{}'.format(activation_function))
+    names = ['With Batch Normalization', 'Without Batch Normalization']
 
-    title = 'Evaluation of Different Activation Functions on Model Performance'
+    title = 'Evaluation of Batch Normalization on Model Performance'
 
     # Generate plot comparison for the models
     plot_comparison(histories, names, title)

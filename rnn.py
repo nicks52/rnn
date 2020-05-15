@@ -207,24 +207,47 @@ if __name__ == '__main__':
     #                                     batch_size, epochs)
     # plot_comparison([rnn_model_history], [], 'Evaluation of Training for 1,000 Epochs')
 
-    # Test memory_length
+    # Test RNN layers
     histories = []
     names = []
     epochs = 100
     batch_size = 5
+    memory_length = 15
 
-    memory_lengths = [5, 10, 15]
-    for memory_length in memory_lengths:
-        built_rnn_model = build_rnn_model(memory_length)
-        rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
-                                            batch_size, epochs)
-        histories.append(rnn_model_history)
-        names.append('Memory Length: {}'.format(memory_length))
+    rnn_layers = ['LSTM', 'GRU', 'SimpleRNN']
+    for rnn_layer in rnn_layers:
+        built_rnn_model = build_rnn_model(memory_length, rnn_layer)
+        print(built_rnn_model.summary())
+    #     rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+    #                                         batch_size, epochs)
+    #     histories.append(rnn_model_history)
+    #     names.append('Memory Length: {}'.format(memory_length))
 
-    title = 'Evaluation of Memory Length on Model Performance'
+    # title = 'Evaluation of Memory Length on Model Performance'
 
-    # Generate plot comparison for the models
-    plot_comparison(histories, names, title)
+    # # Generate plot comparison for the models
+    # plot_comparison(histories, names, title)
+
+
+
+    # # Test memory_length
+    # histories = []
+    # names = []
+    # epochs = 100
+    # batch_size = 5
+
+    # memory_lengths = [5, 10, 15]
+    # for memory_length in memory_lengths:
+    #     built_rnn_model = build_rnn_model(memory_length)
+    #     rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+    #                                         batch_size, epochs)
+    #     histories.append(rnn_model_history)
+    #     names.append('Memory Length: {}'.format(memory_length))
+
+    # title = 'Evaluation of Memory Length on Model Performance'
+
+    # # Generate plot comparison for the models
+    # plot_comparison(histories, names, title)
 
 
     # # Test the model

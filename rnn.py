@@ -72,15 +72,33 @@ def split_to_x_y_data(given_array):
     return x_data, y_data
 
 
-def build_rnn_model(memory_length):
+def build_rnn_model(memory_length, rnn_layer='LSTM'):
     """Returns a built and compiled rnn model"""
-    model = Sequential()
-    model.add(LSTM(memory_length, input_shape=(499, 1), return_sequences=True))
-    model.add(BatchNormalization())
-    model.add(LSTM(memory_length, return_sequences=True))
-    model.add(BatchNormalization())
-    model.add(LSTM(memory_length, return_sequences=True))
-    model.add(Dense(1, activation=None))
+
+    if rnn_layer == 'LSTM':
+        model = Sequential()
+        model.add(LSTM(memory_length, input_shape=(499, 1), return_sequences=True))
+        model.add(BatchNormalization())
+        model.add(LSTM(memory_length, return_sequences=True))
+        model.add(BatchNormalization())
+        model.add(LSTM(memory_length, return_sequences=True))
+        model.add(Dense(1, activation=None))
+    elif rnn_layer == 'GRU':
+        model = Sequential()
+        model.add(GRU(memory_length, input_shape=(499, 1), return_sequences=True))
+        model.add(BatchNormalization())
+        model.add(GRU(memory_length, return_sequences=True))
+        model.add(BatchNormalization())
+        model.add(GRU(memory_length, return_sequences=True))
+        model.add(Dense(1, activation=None))
+    else:
+        model = Sequential()
+        model.add(SimpleRNN(memory_length, input_shape=(499, 1), return_sequences=True))
+        model.add(BatchNormalization())
+        model.add(SimpleRNN(memory_length, return_sequences=True))
+        model.add(BatchNormalization())
+        model.add(SimpleRNN(memory_length, return_sequences=True))
+        model.add(Dense(1, activation=None))
 
     model.compile(optimizer="Adam", loss="mse", metrics=["mse"])
 

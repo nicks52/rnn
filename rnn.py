@@ -7,13 +7,12 @@ large number (larger than 20) of sinusoids with randomly generated
 amplitudes, frequencies, and phases.
 
 To test:
-    using LSTM vs GRU vs SimpleRNN
+    - using LSTM vs GRU vs SimpleRNN
+    - using dropout, using recurrent dropout
     rerun memory length
-    using dropout, using recurrent dropout
     using different activation functions
     no BatchNormalization
     using different optimizers
-
 """
 
 import numpy as np

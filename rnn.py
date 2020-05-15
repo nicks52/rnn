@@ -169,7 +169,7 @@ if __name__ == '__main__':
 
     # Train the model
     batch_size = 20
-    epochs = 15
+    epochs = 10000
     rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
                                         batch_size, epochs)
 

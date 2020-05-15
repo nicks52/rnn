@@ -71,7 +71,7 @@ def split_to_x_y_data(given_array):
     return x_data, y_data
 
 
-def build_rnn_model(memory_length, rnn_layer='LSTM', dropout=0.0):
+def build_rnn_model(memory_length, rnn_layer='LSTM', dropout=0.0, activation='tanh'):
     """Returns a built and compiled rnn model"""
 
     if rnn_layer == 'LSTM':
@@ -79,18 +79,21 @@ def build_rnn_model(memory_length, rnn_layer='LSTM', dropout=0.0):
         model.add(
             LSTM(memory_length,
                  input_shape=(499, 1),
+                 activation=activation,
                  dropout=dropout,
                  recurrent_dropout=dropout,
                  return_sequences=True))
         model.add(BatchNormalization())
         model.add(
             LSTM(memory_length,
+                 activation=activation,
                  dropout=dropout,
                  recurrent_dropout=dropout,
                  return_sequences=True))
         model.add(BatchNormalization())
         model.add(
             LSTM(memory_length,
+                 activation=activation,
                  dropout=dropout,
                  recurrent_dropout=dropout,
                  return_sequences=True))
@@ -100,18 +103,21 @@ def build_rnn_model(memory_length, rnn_layer='LSTM', dropout=0.0):
         model.add(
             GRU(memory_length,
                 input_shape=(499, 1),
+                activation=activation,
                 dropout=dropout,
                 recurrent_dropout=dropout,
                 return_sequences=True))
         model.add(BatchNormalization())
         model.add(
             GRU(memory_length,
+                activation=activation,
                 dropout=dropout,
                 recurrent_dropout=dropout,
                 return_sequences=True))
         model.add(BatchNormalization())
         model.add(
             GRU(memory_length,
+                activation=activation,
                 dropout=dropout,
                 recurrent_dropout=dropout,
                 return_sequences=True))
@@ -121,18 +127,21 @@ def build_rnn_model(memory_length, rnn_layer='LSTM', dropout=0.0):
         model.add(
             SimpleRNN(memory_length,
                       input_shape=(499, 1),
+                      activation=activation,
                       dropout=dropout,
                       recurrent_dropout=dropout,
                       return_sequences=True))
         model.add(BatchNormalization())
         model.add(
             SimpleRNN(memory_length,
+                      activation=activation,
                       dropout=dropout,
                       recurrent_dropout=dropout,
                       return_sequences=True))
         model.add(BatchNormalization())
         model.add(
             SimpleRNN(memory_length,
+                      activation=activation,
                       dropout=dropout,
                       recurrent_dropout=dropout,
                       return_sequences=True))
@@ -289,21 +298,43 @@ if __name__ == '__main__':
     # # Generate plot comparison for the models
     # plot_comparison(histories, names, title)
 
+    # # Test memory_length
+    # histories = []
+    # names = []
+    # epochs = 100
+    # batch_size = 5
+
+    # memory_lengths = [5, 10, 15]
+    # for memory_length in memory_lengths:
+    #     built_rnn_model = build_rnn_model(memory_length, 'GRU', dropout=0.0)
+    #     rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+    #                                         batch_size, epochs)
+    #     histories.append(rnn_model_history)
+    #     names.append('Memory Length: {}'.format(memory_length))
+
+    # title = 'Evaluation of Memory Length on Model Performance'
+
+    # # Generate plot comparison for the models
+    # plot_comparison(histories, names, title)
+
     # Test memory_length
     histories = []
     names = []
     epochs = 100
     batch_size = 5
+    memory_length = 15
+    rnn_layer = 'GRU'
+    dropout = 0.0
 
-    memory_lengths = [5, 10, 15]
-    for memory_length in memory_lengths:
-        built_rnn_model = build_rnn_model(memory_length, 'GRU', dropout=0.0)
+    activation_functions = ['tanh', 'relu', 'sigmoid']
+    for activation_function in activation_functions:
+        built_rnn_model = build_rnn_model(memory_length, rnn_layer, dropout, activation_function)
         rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
                                             batch_size, epochs)
         histories.append(rnn_model_history)
-        names.append('Memory Length: {}'.format(memory_length))
+        names.append('{}'.format(activation_function))
 
-    title = 'Evaluation of Memory Length on Model Performance'
+    title = 'Evaluation of Different Activation Functions on Model Performance'
 
     # Generate plot comparison for the models
     plot_comparison(histories, names, title)

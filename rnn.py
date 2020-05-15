@@ -175,12 +175,12 @@ def train_rnn_model(compile_model, x_train, y_train, batch_size, epochs):
 
 
 def evaluate_rnn_model(train_model, x_test, y_test, batch_size):
-    """Returns score and accuracy of the trained RNN model"""
-    score, accuracy = train_model.evaluate(x_test,
+    """Returns score and MSE of the trained RNN model"""
+    score, mse = train_model.evaluate(x_test,
                                            y_test,
                                            batch_size=batch_size)
 
-    return score, accuracy
+    return score, mse
 
 
 def plot_comparison(histories, names, title):
@@ -375,34 +375,52 @@ if __name__ == '__main__':
     # # Generate plot comparison for the models
     # plot_comparison(histories, names, title)
 
-    # Test different optimizers
-    histories = []
-    names = []
-    epochs = 100
+    # # Test different optimizers
+    # histories = []
+    # names = []
+    # epochs = 100
+    # batch_size = 5
+    # memory_length = 15
+    # rnn_layer = 'GRU'
+    # dropout = 0.0
+    # activation_function = 'tanh'
+    # batch_norm = False
+
+    # optimizers = ['adam', 'sgd', 'rmsprop', 'adadelta', 'nadam']
+    # for optimizer in optimizers:
+    #     built_rnn_model = build_rnn_model(memory_length, rnn_layer, dropout,
+    #                                       activation_function, batch_norm,
+    #                                       optimizer)
+    #     rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+    #                                         batch_size, epochs)
+    #     histories.append(rnn_model_history)
+    #     names.append('{}'.format(optimizer))
+
+    # title = 'Evaluation of Different Optimizers on Model Performance'
+
+    # # Generate plot comparison for the models
+    # plot_comparison(histories, names, title)
+
+    # Final Model
+    epochs = 40
     batch_size = 5
     memory_length = 15
     rnn_layer = 'GRU'
     dropout = 0.0
     activation_function = 'tanh'
     batch_norm = False
-
-    optimizers = ['adam', 'sgd', 'rmsprop', 'adadelta', 'nadam']
-    for optimizer in optimizers:
-        built_rnn_model = build_rnn_model(memory_length, rnn_layer, dropout,
-                                          activation_function, batch_norm, optimizer)
-        rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+    optimizer = 'adam'
+    built_rnn_model = build_rnn_model(memory_length, rnn_layer, dropout,
+                                          activation_function, batch_norm,
+                                          optimizer)
+    rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
                                             batch_size, epochs)
-        histories.append(rnn_model_history)
-        names.append('{}'.format(optimizer))
 
-    title = 'Evaluation of Different Optimizers on Model Performance'
+    plot_comparison([rnn_model_history], ['Final Model'], 'Final Model Performance')
 
-    # Generate plot comparison for the models
-    plot_comparison(histories, names, title)
-
-    # # Test the model
-    # test_score, test_accuracy = evaluate_rnn_model(built_rnn_model, x_test,
-    #                                                y_test, batch_size)
+    # Test the model
+    test_score, test_mse = evaluate_rnn_model(built_rnn_model, x_test,
+                                                   y_test, batch_size)
 
     # print('Test score:', test_score)
-    # print('Test accuracy:', test_accuracy)
+    print('Test MSE:', test_mse)

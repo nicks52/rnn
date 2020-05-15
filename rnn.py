@@ -44,7 +44,7 @@ def split_input_data(input_data, train_split, memory_length):
     return x_train, y_train, x_test, y_test
 
 
-def split_to_x_y_data(given_array, memory_length):
+def split_to_x_y_data(given_array):
     """Returns x and y data based on the given array
 
     The model should predict the next value of x given x_k which means
@@ -99,11 +99,17 @@ def evaluate_rnn_model(train_model, x_test, y_test, batch_size):
 
 def plot_comparison(histories, names, title):
     """
-    Generate two plots to compare two RNN models.
+    Generate two plots to compare RNN models.
 
     The first plot compares the training mean squared error (MSE) of the
-    two models. And the second plot compares the validation mean squared
+    models. And the second plot compares the validation mean squared
     error.
+
+    Args:
+      histories: list of history objects from each time a new model is
+        trained
+      names: list of strings to uniquely identify the history objects
+      title: string, super title of the figure
     """
     fig, ax = plt.subplots(1, 2)
     fig.suptitle(title)
@@ -137,16 +143,7 @@ if __name__ == '__main__':
     x_train, y_train, x_test, y_test = split_input_data(
         all_data, train_test_split, memory_length)
 
-    # # Build and compile the model
-    # built_rnn_model = build_rnn_model(memory_length)
-    # print(built_rnn_model.summary())
-
-    # # Train the model
-    # batch_size = 20
-    # epochs = 100
-    # rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
-    #                                     batch_size, epochs)
-
+    # Evaluate varying batch_size on model performance
     histories = []
     names = []
     epochs = 100
@@ -155,7 +152,7 @@ if __name__ == '__main__':
     for batch in batch_sizes:
         built_rnn_model = build_rnn_model(memory_length)
         rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
-                                        batch, epochs)
+                                            batch, epochs)
         histories.append(rnn_model_history)
         names.append('Batch size: {}'.format(batch))
 

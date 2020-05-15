@@ -74,7 +74,8 @@ def split_to_x_y_data(given_array):
 def build_rnn_model(memory_length,
                     rnn_layer='LSTM',
                     dropout=0.0,
-                    activation='tanh'):
+                    activation='tanh',
+                    batch_norm=True):
     """Returns a built and compiled rnn model"""
 
     if rnn_layer == 'LSTM':
@@ -86,14 +87,16 @@ def build_rnn_model(memory_length,
                  dropout=dropout,
                  recurrent_dropout=dropout,
                  return_sequences=True))
-        model.add(BatchNormalization())
+        if batch_norm:
+            model.add(BatchNormalization())
         model.add(
             LSTM(memory_length,
                  activation=activation,
                  dropout=dropout,
                  recurrent_dropout=dropout,
                  return_sequences=True))
-        model.add(BatchNormalization())
+        if batch_norm:
+            model.add(BatchNormalization())
         model.add(
             LSTM(memory_length,
                  activation=activation,
@@ -110,14 +113,16 @@ def build_rnn_model(memory_length,
                 dropout=dropout,
                 recurrent_dropout=dropout,
                 return_sequences=True))
-        model.add(BatchNormalization())
+        if batch_norm:
+            model.add(BatchNormalization())
         model.add(
             GRU(memory_length,
                 activation=activation,
                 dropout=dropout,
                 recurrent_dropout=dropout,
                 return_sequences=True))
-        model.add(BatchNormalization())
+        if batch_norm:
+            model.add(BatchNormalization())
         model.add(
             GRU(memory_length,
                 activation=activation,
@@ -134,14 +139,16 @@ def build_rnn_model(memory_length,
                       dropout=dropout,
                       recurrent_dropout=dropout,
                       return_sequences=True))
-        model.add(BatchNormalization())
+        if batch_norm:
+            model.add(BatchNormalization())
         model.add(
             SimpleRNN(memory_length,
                       activation=activation,
                       dropout=dropout,
                       recurrent_dropout=dropout,
                       return_sequences=True))
-        model.add(BatchNormalization())
+        if batch_norm:
+            model.add(BatchNormalization())
         model.add(
             SimpleRNN(memory_length,
                       activation=activation,

@@ -165,19 +165,39 @@ if __name__ == '__main__':
 
     # title = 'Evaluation of Batch Size on Model Performance'
 
-    # # Generate plot comparison for two models
+    # # Generate plot comparison for the models
     # plot_comparison(histories, names, title)
 
-    # Using batch size of 5 for remainder of analysis
-    # Evaluating number of epochs used in training on model performance
-    batch_size = 5
-    epochs = 1000
-    memory_length = 15
+    # # Using batch size of 5 for remainder of analysis
+    # # Evaluating number of epochs used in training on model performance
+    # batch_size = 5
+    # epochs = 1000
+    # memory_length = 15
 
-    built_rnn_model = build_rnn_model(memory_length)
-    rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
-                                        batch_size, epochs)
-    plot_comparison([rnn_model_history], [], 'Evaluation of Training for 1,000 Epochs')
+    # built_rnn_model = build_rnn_model(memory_length)
+    # rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+    #                                     batch_size, epochs)
+    # plot_comparison([rnn_model_history], [], 'Evaluation of Training for 1,000 Epochs')
+
+    # Test memory_length
+    histories = []
+    names = []
+    epochs = 100
+    batch_size = 5
+
+    memory_lengths = [5, 10, 15]
+    for memory_length in memory_lengths:
+        built_rnn_model = build_rnn_model(memory_length)
+        rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+                                            batch_size, epochs)
+        histories.append(rnn_model_history)
+        names.append('Memory Length: {}'.format(memory_length))
+
+    title = 'Evaluation of Memory Length on Model Performance'
+
+    # Generate plot comparison for the models
+    plot_comparison(histories, names, title)
+
 
     # # Test the model
     # test_score, test_accuracy = evaluate_rnn_model(built_rnn_model, x_test,

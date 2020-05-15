@@ -28,7 +28,7 @@ def load_data(data_filename):
     return standardized_data
 
 
-def split_input_data(input_data, train_split, memory_length):
+def split_input_data(input_data, train_split):
     """Returns x_train, y_train, x_test, y_test numpy arrays
 
     The train and test arrays are separated by the value train_split.
@@ -39,8 +39,8 @@ def split_input_data(input_data, train_split, memory_length):
     The train and test arrays are then split into x and y values
     """
     training_data, testing_data = np.split(input_data, [train_split])
-    x_train, y_train = split_to_x_y_data(training_data, memory_length)
-    x_test, y_test = split_to_x_y_data(testing_data, memory_length)
+    x_train, y_train = split_to_x_y_data(training_data)
+    x_test, y_test = split_to_x_y_data(testing_data)
     return x_train, y_train, x_test, y_test
 
 

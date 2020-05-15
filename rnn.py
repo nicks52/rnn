@@ -150,23 +150,36 @@ if __name__ == '__main__':
     x_train, y_train, x_test, y_test = split_input_data(
         all_data, train_test_split, memory_length)
 
-    # Evaluate varying batch_size on model performance
+    # # Evaluate varying batch_size on model performance
+    # histories = []
+    # names = []
+    # epochs = 100
+
+    # batch_sizes = [30, 20, 10, 5, 1]
+    # for batch in batch_sizes:
+    #     built_rnn_model = build_rnn_model(memory_length)
+    #     rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+    #                                         batch, epochs)
+    #     histories.append(rnn_model_history)
+    #     names.append('Batch size: {}'.format(batch))
+
+    # title = 'Evaluation of Batch Size on Model Performance'
+
+    # # Generate plot comparison for two models
+    # plot_comparison(histories, names, title)
+
+    # Using batch size of 5 for remainder of analysis
+    # Evaluating number of epochs used in training on model performance
+    batch_size = 5
+    epochs = 1000
     histories = []
     names = []
-    epochs = 100
 
-    batch_sizes = [30, 20, 10, 5, 1]
-    for batch in batch_sizes:
-        built_rnn_model = build_rnn_model(memory_length)
-        rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
-                                            batch, epochs)
-        histories.append(rnn_model_history)
-        names.append('Batch size: {}'.format(batch))
-
-    title = 'Evaluation of Batch Size on Model Performance'
-
-    # Generate plot comparison for two models
-    plot_comparison(histories, names, title)
+    built_rnn_model = build_rnn_model(memory_length)
+    rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+                                        batch_size, epochs)
+    histories.append(rnn_model_history)
+    names.append()
 
     # # Test the model
     # test_score, test_accuracy = evaluate_rnn_model(built_rnn_model, x_test,

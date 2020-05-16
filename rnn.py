@@ -176,9 +176,7 @@ def train_rnn_model(compile_model, x_train, y_train, batch_size, epochs):
 
 def evaluate_rnn_model(train_model, x_test, y_test, batch_size):
     """Returns score and MSE of the trained RNN model"""
-    score, mse = train_model.evaluate(x_test,
-                                           y_test,
-                                           batch_size=batch_size)
+    score, mse = train_model.evaluate(x_test, y_test, batch_size=batch_size)
 
     return score, mse
 
@@ -411,16 +409,17 @@ if __name__ == '__main__':
     batch_norm = False
     optimizer = 'adam'
     built_rnn_model = build_rnn_model(memory_length, rnn_layer, dropout,
-                                          activation_function, batch_norm,
-                                          optimizer)
+                                      activation_function, batch_norm,
+                                      optimizer)
     rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
-                                            batch_size, epochs)
+                                        batch_size, epochs)
 
-    plot_comparison([rnn_model_history], ['Final Model'], 'Final Model Performance')
+    plot_comparison([rnn_model_history], ['Final Model'],
+                    'Final Model Performance')
 
     # Test the model
-    test_score, test_mse = evaluate_rnn_model(built_rnn_model, x_test,
-                                                   y_test, batch_size)
+    test_score, test_mse = evaluate_rnn_model(built_rnn_model, x_test, y_test,
+                                              batch_size)
 
     # print('Test score:', test_score)
     print('Test MSE:', test_mse)

@@ -1,18 +1,12 @@
 #!/usr/bin/env python
 #By Nick Serger
 """
+A Deep RNN to predict future timeseries data.
+
 The data file “data.npy” contains a matrix, of 100 rows and 500 columns.
 Each row represents a signal, which contains the superposition of a
 large number (larger than 20) of sinusoids with randomly generated
 amplitudes, frequencies, and phases.
-
-To test:
-    - using LSTM vs GRU vs SimpleRNN
-    - using dropout, using recurrent dropout
-    - rerun memory length
-    - using different activation functions
-    - no BatchNormalization
-    using different optimizers
 """
 
 import numpy as np
@@ -232,172 +226,156 @@ if __name__ == '__main__':
     x_train, y_train, x_test, y_test = split_input_data(
         all_data, train_test_split)
 
-    # # Evaluate varying batch_size on model performance
-    # histories = []
-    # names = []
-    # epochs = 100
-    # memory_length = 15
+    # Evaluate varying batch_size on model performance
+    histories = []
+    names = []
+    epochs = 100
+    memory_length = 15
 
-    # batch_sizes = [30, 20, 10, 5, 1]
-    # for batch in batch_sizes:
-    #     built_rnn_model = build_rnn_model(memory_length)
-    #     rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
-    #                                         batch, epochs)
-    #     histories.append(rnn_model_history)
-    #     names.append('Batch size: {}'.format(batch))
+    batch_sizes = [30, 20, 10, 5, 1]
+    for batch in batch_sizes:
+        built_rnn_model = build_rnn_model(memory_length)
+        rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+                                            batch, epochs)
+        histories.append(rnn_model_history)
+        names.append('Batch size: {}'.format(batch))
 
-    # title = 'Evaluation of Batch Size on Model Performance'
+    title = 'Evaluation of Batch Size on Model Performance'
+    plot_comparison(histories, names, title)
 
-    # # Generate plot comparison for the models
-    # plot_comparison(histories, names, title)
+    # Evaluating number of epochs used in training on model performance
+    batch_size = 5
+    epochs = 1000
+    memory_length = 15
 
-    # # Using batch size of 5 for remainder of analysis
-    # # Evaluating number of epochs used in training on model performance
-    # batch_size = 5
-    # epochs = 1000
-    # memory_length = 15
+    built_rnn_model = build_rnn_model(memory_length)
+    rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+                                        batch_size, epochs)
+    plot_comparison([rnn_model_history], [], 'Evaluation of Training for 1,000 Epochs')
 
-    # built_rnn_model = build_rnn_model(memory_length)
-    # rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
-    #                                     batch_size, epochs)
-    # plot_comparison([rnn_model_history], [], 'Evaluation of Training for 1,000 Epochs')
+    # Test RNN layers
+    histories = []
+    names = []
+    epochs = 100
+    batch_size = 5
+    memory_length = 15
 
-    # # Test RNN layers
-    # histories = []
-    # names = []
-    # epochs = 100
-    # batch_size = 5
-    # memory_length = 15
+    rnn_layers = ['LSTM', 'GRU', 'SimpleRNN']
+    for rnn_layer in rnn_layers:
+        built_rnn_model = build_rnn_model(memory_length, rnn_layer)
+        rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+                                            batch_size, epochs)
+        histories.append(rnn_model_history)
+        names.append(rnn_layer)
 
-    # rnn_layers = ['LSTM', 'GRU', 'SimpleRNN']
-    # for rnn_layer in rnn_layers:
-    #     built_rnn_model = build_rnn_model(memory_length, rnn_layer)
-    #     rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
-    #                                         batch_size, epochs)
-    #     histories.append(rnn_model_history)
-    #     names.append(rnn_layer)
+    title = 'Evaluation of Different RNN Layers on Model Performance'
+    plot_comparison(histories, names, title)
 
-    # title = 'Evaluation of Different RNN Layers on Model Performance'
+    # Test RNN layers with and without dropout
+    histories = []
+    names = []
+    epochs = 100
+    batch_size = 5
+    memory_length = 15
+    title = 'Evaluation of Different RNN Layers With and Without Dropout on Model Performance'
 
-    # # Generate plot comparison for the models
-    # plot_comparison(histories, names, title)
+    rnn_layers = ['LSTM', 'GRU', 'SimpleRNN']
+    dropout_values = [0.0, 0.2]
+    for rnn_layer in rnn_layers:
+        for dropout in dropout_values:
+            built_rnn_model = build_rnn_model(memory_length, rnn_layer,
+                                              dropout)
+            rnn_model_history = train_rnn_model(built_rnn_model, x_train,
+                                                y_train, batch_size, epochs)
+            histories.append(rnn_model_history)
+            names.append('{}, dropout: {}'.format(rnn_layer, dropout))
 
-    # # Test RNN layers with and without dropout
-    # histories = []
-    # names = []
-    # epochs = 100
-    # batch_size = 5
-    # memory_length = 15
-    # title = 'Evaluation of Different RNN Layers With and Without Dropout on Model Performance'
+    title = 'Evaluation of Different RNN Layers With and Without Dropout on Model Performance'
+    plot_comparison(histories, names, title)
 
-    # rnn_layers = ['LSTM', 'GRU', 'SimpleRNN']
-    # dropout_values = [0.0, 0.2]
-    # for rnn_layer in rnn_layers:
-    #     for dropout in dropout_values:
-    #         built_rnn_model = build_rnn_model(memory_length, rnn_layer,
-    #                                           dropout)
-    #         rnn_model_history = train_rnn_model(built_rnn_model, x_train,
-    #                                             y_train, batch_size, epochs)
-    #         histories.append(rnn_model_history)
-    #         names.append('{}, dropout: {}'.format(rnn_layer, dropout))
-    #         # plot_comparison(histories, names, title)
+    # Test memory_length
+    histories = []
+    names = []
+    epochs = 100
+    batch_size = 5
 
-    # title = 'Evaluation of Different RNN Layers With and Without Dropout on Model Performance'
+    memory_lengths = [5, 10, 15]
+    for memory_length in memory_lengths:
+        built_rnn_model = build_rnn_model(memory_length, 'GRU', dropout=0.0)
+        rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+                                            batch_size, epochs)
+        histories.append(rnn_model_history)
+        names.append('Memory Length: {}'.format(memory_length))
 
-    # # Generate plot comparison for the models
-    # plot_comparison(histories, names, title)
+    title = 'Evaluation of Memory Length on Model Performance'
+    plot_comparison(histories, names, title)
 
-    # # Test memory_length
-    # histories = []
-    # names = []
-    # epochs = 100
-    # batch_size = 5
+    # Test different activation functions
+    histories = []
+    names = []
+    epochs = 100
+    batch_size = 5
+    memory_length = 15
+    rnn_layer = 'GRU'
+    dropout = 0.0
 
-    # memory_lengths = [5, 10, 15]
-    # for memory_length in memory_lengths:
-    #     built_rnn_model = build_rnn_model(memory_length, 'GRU', dropout=0.0)
-    #     rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
-    #                                         batch_size, epochs)
-    #     histories.append(rnn_model_history)
-    #     names.append('Memory Length: {}'.format(memory_length))
+    activation_functions = ['tanh', 'relu', 'sigmoid']
+    for activation_function in activation_functions:
+        built_rnn_model = build_rnn_model(memory_length, rnn_layer, dropout,
+                                          activation_function)
+        rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+                                            batch_size, epochs)
+        histories.append(rnn_model_history)
+        names.append('{}'.format(activation_function))
 
-    # title = 'Evaluation of Memory Length on Model Performance'
+    title = 'Evaluation of Different Activation Functions on Model Performance'
+    plot_comparison(histories, names, title)
 
-    # # Generate plot comparison for the models
-    # plot_comparison(histories, names, title)
+    # Test using and not using batch normalization
+    histories = []
+    names = []
+    epochs = 100
+    batch_size = 5
+    memory_length = 15
+    rnn_layer = 'GRU'
+    dropout = 0.0
+    activation_function = 'tanh'
 
-    # # Test different activation functions
-    # histories = []
-    # names = []
-    # epochs = 100
-    # batch_size = 5
-    # memory_length = 15
-    # rnn_layer = 'GRU'
-    # dropout = 0.0
+    use_batch_norm = [True, False]
+    for batch_norm in use_batch_norm:
+        built_rnn_model = build_rnn_model(memory_length, rnn_layer, dropout,
+                                          activation_function, batch_norm)
+        rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+                                            batch_size, epochs)
+        histories.append(rnn_model_history)
+    names = ['With Batch Normalization', 'Without Batch Normalization']
 
-    # activation_functions = ['tanh', 'relu', 'sigmoid']
-    # for activation_function in activation_functions:
-    #     built_rnn_model = build_rnn_model(memory_length, rnn_layer, dropout,
-    #                                       activation_function)
-    #     rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
-    #                                         batch_size, epochs)
-    #     histories.append(rnn_model_history)
-    #     names.append('{}'.format(activation_function))
+    title = 'Evaluation of Batch Normalization on Model Performance'
+    plot_comparison(histories, names, title)
 
-    # title = 'Evaluation of Different Activation Functions on Model Performance'
+    # Test different optimizers
+    histories = []
+    names = []
+    epochs = 100
+    batch_size = 5
+    memory_length = 15
+    rnn_layer = 'GRU'
+    dropout = 0.0
+    activation_function = 'tanh'
+    batch_norm = False
 
-    # # Generate plot comparison for the models
-    # plot_comparison(histories, names, title)
+    optimizers = ['adam', 'sgd', 'rmsprop', 'adadelta', 'nadam']
+    for optimizer in optimizers:
+        built_rnn_model = build_rnn_model(memory_length, rnn_layer, dropout,
+                                          activation_function, batch_norm,
+                                          optimizer)
+        rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+                                            batch_size, epochs)
+        histories.append(rnn_model_history)
+        names.append('{}'.format(optimizer))
 
-    # # Test using and not using batch normalization
-    # histories = []
-    # names = []
-    # epochs = 100
-    # batch_size = 5
-    # memory_length = 15
-    # rnn_layer = 'GRU'
-    # dropout = 0.0
-    # activation_function = 'tanh'
-
-    # use_batch_norm = [True, False]
-    # for batch_norm in use_batch_norm:
-    #     built_rnn_model = build_rnn_model(memory_length, rnn_layer, dropout,
-    #                                       activation_function, batch_norm)
-    #     rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
-    #                                         batch_size, epochs)
-    #     histories.append(rnn_model_history)
-    # names = ['With Batch Normalization', 'Without Batch Normalization']
-
-    # title = 'Evaluation of Batch Normalization on Model Performance'
-
-    # # Generate plot comparison for the models
-    # plot_comparison(histories, names, title)
-
-    # # Test different optimizers
-    # histories = []
-    # names = []
-    # epochs = 100
-    # batch_size = 5
-    # memory_length = 15
-    # rnn_layer = 'GRU'
-    # dropout = 0.0
-    # activation_function = 'tanh'
-    # batch_norm = False
-
-    # optimizers = ['adam', 'sgd', 'rmsprop', 'adadelta', 'nadam']
-    # for optimizer in optimizers:
-    #     built_rnn_model = build_rnn_model(memory_length, rnn_layer, dropout,
-    #                                       activation_function, batch_norm,
-    #                                       optimizer)
-    #     rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
-    #                                         batch_size, epochs)
-    #     histories.append(rnn_model_history)
-    #     names.append('{}'.format(optimizer))
-
-    # title = 'Evaluation of Different Optimizers on Model Performance'
-
-    # # Generate plot comparison for the models
-    # plot_comparison(histories, names, title)
+    title = 'Evaluation of Different Optimizers on Model Performance'
+    plot_comparison(histories, names, title)
 
     # Final Model
     epochs = 40
@@ -418,8 +396,7 @@ if __name__ == '__main__':
                     'Final Model Performance')
 
     # Test the model
-    test_score, test_mse = evaluate_rnn_model(built_rnn_model, x_test, y_test,
+    _, test_mse = evaluate_rnn_model(built_rnn_model, x_test, y_test,
                                               batch_size)
 
-    # print('Test score:', test_score)
     print('Test MSE:', test_mse)

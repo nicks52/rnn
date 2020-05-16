@@ -18,6 +18,9 @@ from keras.layers import LSTM, GRU, SimpleRNN
 
 from sklearn.preprocessing import StandardScaler
 
+# Increase font size of matplotlib fonts
+plt.rcParams.update({'font.size': 12})
+
 
 def load_data(data_filename):
     """Returns the input data from the file data.npy as a numpy array"""

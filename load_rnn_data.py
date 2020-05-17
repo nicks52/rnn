@@ -13,6 +13,7 @@ amplitudes, frequencies, and phases.
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 
+
 def load_data(file_path, normalize_data=True, train_split=.66):
     """Load the data in the path provided.
 
@@ -31,6 +32,7 @@ def load_data(file_path, normalize_data=True, train_split=.66):
         input_data = _scale_data(input_data)
     return _split_input_data(input_data, train_split)
 
+
 def _load_data(file_path):
     """Returns the data from the input file as a numpy array."""
     try:
@@ -40,11 +42,13 @@ def _load_data(file_path):
         raise err
     return loaded_data
 
+
 def _scale_data(loaded_data):
     """Normalize data with a mean of 0 and std dev of 1"""
     scaler = StandardScaler()
     standardized_data = scaler.fit_transform(loaded_data)
     return standardized_data
+
 
 def _split_input_data(input_data, train_split):
     """Returns x_train, y_train, x_test, y_test numpy arrays.
@@ -62,6 +66,7 @@ def _split_input_data(input_data, train_split):
     x_train, y_train = _split_to_x_y_data(training_data)
     x_test, y_test = _split_to_x_y_data(testing_data)
     return (x_train, y_train), (x_test, y_test)
+
 
 def _split_to_x_y_data(given_array):
     """Returns x and y data based on the given array.

@@ -268,17 +268,23 @@ if __name__ == '__main__':
     # # Test RNN layers
     # histories = []
     # names = []
-    # epochs = 100
+    # epochs = 40
     # batch_size = 5
     # memory_length = 15
+    # input_shape = (499, 1)
+    # batch_norm = False
 
     # rnn_layers = ['LSTM', 'GRU', 'SimpleRNN']
     # for rnn_layer in rnn_layers:
-    #     built_rnn_model = build_rnn_model(memory_length, rnn_layer)
-    #     rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
-    #                                         batch_size, epochs)
-    #     histories.append(rnn_model_history)
-    #     names.append(rnn_layer)
+    #     built_rnn_model = build_rnn_model(memory_length,
+    #                                       input_shape,
+    #                                       rnn_layer,
+    #                                       batch_norm=False)
+    #     print(built_rnn_model.summary())
+    #     # rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+    #     # batch_size, epochs)
+    #     # histories.append(rnn_model_history)
+    #     # names.append(rnn_layer)
 
     # title = 'Evaluation of Different RNN Layers on Model Performance'
     # plot_comparison(histories, names, title)
@@ -322,26 +328,26 @@ if __name__ == '__main__':
     # title = 'Evaluation of Memory Length on Model Performance'
     # plot_comparison(histories, names, title)
 
-    # Test different activation functions
-    histories = []
-    names = []
-    epochs = 100
-    batch_size = 5
-    memory_length = 15
-    rnn_layer = 'GRU'
-    dropout = 0.0
+    # # Test different activation functions
+    # histories = []
+    # names = []
+    # epochs = 100
+    # batch_size = 5
+    # memory_length = 15
+    # rnn_layer = 'GRU'
+    # dropout = 0.0
 
-    activation_functions = ['tanh', 'relu', 'sigmoid']
-    for activation_function in activation_functions:
-        built_rnn_model = build_rnn_model(memory_length, rnn_layer, dropout,
-                                          activation_function)
-        rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
-                                            batch_size, epochs)
-        histories.append(rnn_model_history)
-        names.append('{}'.format(activation_function))
+    # activation_functions = ['tanh', 'relu', 'sigmoid']
+    # for activation_function in activation_functions:
+    #     built_rnn_model = build_rnn_model(memory_length, rnn_layer, dropout,
+    #                                       activation_function)
+    #     rnn_model_history = train_rnn_model(built_rnn_model, x_train, y_train,
+    #                                         batch_size, epochs)
+    #     histories.append(rnn_model_history)
+    #     names.append('{}'.format(activation_function))
 
-    title = 'Evaluation of Different Activation Functions on Model Performance'
-    plot_comparison(histories, names, title)
+    # title = 'Evaluation of Different Activation Functions on Model Performance'
+    # plot_comparison(histories, names, title)
 
     # # Test using and not using batch normalization
     # histories = []

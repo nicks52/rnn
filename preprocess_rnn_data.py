@@ -13,6 +13,7 @@ amplitudes, frequencies, and phases.
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 
+
 class ProcessData:
     def __init__(self, file_path=None):
         self.file_path = file_path
@@ -40,7 +41,6 @@ class ProcessData:
             input_data = self._scale_data(input_data)
         return self._split_input_data(input_data, train_split)
 
-
     def _load_data(self):
         """Returns the data from the input file as a numpy array."""
         try:
@@ -65,7 +65,7 @@ class ProcessData:
 
         The train and test arrays are then split into x and y values
         """
-        train_samples = int(input_data.shape[0]*train_split)
+        train_samples = int(input_data.shape[0] * train_split)
 
         training_data, testing_data = np.split(input_data, [train_samples])
         x_train, y_train = self._split_to_x_y_data(training_data)
@@ -89,7 +89,10 @@ class ProcessData:
         y_data = reshaped_array[:, 1:, :]
         return x_data, y_data
 
+
 if __name__ == '__main__':
     process_rnn_data = ProcessData('data.npy')
-    (x_train, y_train), (x_test, y_test) = process_rnn_data.load_train_and_test_data(normalize_data=True, train_split=.66)    
+    (x_train, y_train), (x_test,
+                         y_test) = process_rnn_data.load_train_and_test_data(
+                             normalize_data=True, train_split=.66)
     print(x_train, y_train, x_test, y_test)

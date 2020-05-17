@@ -1,12 +1,20 @@
 #!/usr/bin/env python
-#By Nick Serger
 """
+By Nick Serger
+
 A Deep RNN to predict future timeseries data.
 
 The data file “data.npy” contains a matrix, of 100 rows and 500 columns.
 Each row represents a signal, which contains the superposition of a
 large number (larger than 20) of sinusoids with randomly generated
 amplitudes, frequencies, and phases.
+
+
+TODO:
+Make a Preprocessing Class
+Make a rnn model class
+Make an evaluation scipt
+
 """
 
 import numpy as np

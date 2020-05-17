@@ -77,93 +77,94 @@ def split_to_x_y_data(given_array):
 
 
 def build_rnn_model(memory_length,
+                    input_shape,
                     rnn_layer='LSTM',
-                    dropout=0.0,
                     activation='tanh',
-                    batch_norm=True,
+                    batch_norm=False,
                     optimizer='adam'):
     """Returns a built and compiled rnn model"""
 
     if rnn_layer == 'LSTM':
-        model = Sequential()
-        model.add(
-            LSTM(memory_length,
-                 input_shape=(499, 1),
-                 activation=activation,
-                 dropout=dropout,
-                 recurrent_dropout=dropout,
-                 return_sequences=True))
-        if batch_norm:
-            model.add(BatchNormalization())
-        model.add(
-            LSTM(memory_length,
-                 activation=activation,
-                 dropout=dropout,
-                 recurrent_dropout=dropout,
-                 return_sequences=True))
-        if batch_norm:
-            model.add(BatchNormalization())
-        model.add(
-            LSTM(memory_length,
-                 activation=activation,
-                 dropout=dropout,
-                 recurrent_dropout=dropout,
-                 return_sequences=True))
-        model.add(Dense(1, activation=None))
+        model = build_lstm_model(memory_length, input_shape, activation,
+                                 batch_norm)
     elif rnn_layer == 'GRU':
-        model = Sequential()
-        model.add(
-            GRU(memory_length,
-                input_shape=(499, 1),
-                activation=activation,
-                dropout=dropout,
-                recurrent_dropout=dropout,
-                return_sequences=True))
-        if batch_norm:
-            model.add(BatchNormalization())
-        model.add(
-            GRU(memory_length,
-                activation=activation,
-                dropout=dropout,
-                recurrent_dropout=dropout,
-                return_sequences=True))
-        if batch_norm:
-            model.add(BatchNormalization())
-        model.add(
-            GRU(memory_length,
-                activation=activation,
-                dropout=dropout,
-                recurrent_dropout=dropout,
-                return_sequences=True))
-        model.add(Dense(1, activation=None))
+        model = build_gru_model(memory_length, input_shape, activation,
+                                batch_norm)
     else:
-        model = Sequential()
-        model.add(
-            SimpleRNN(memory_length,
-                      input_shape=(499, 1),
-                      activation=activation,
-                      dropout=dropout,
-                      recurrent_dropout=dropout,
-                      return_sequences=True))
-        if batch_norm:
-            model.add(BatchNormalization())
-        model.add(
-            SimpleRNN(memory_length,
-                      activation=activation,
-                      dropout=dropout,
-                      recurrent_dropout=dropout,
-                      return_sequences=True))
-        if batch_norm:
-            model.add(BatchNormalization())
-        model.add(
-            SimpleRNN(memory_length,
-                      activation=activation,
-                      dropout=dropout,
-                      recurrent_dropout=dropout,
-                      return_sequences=True))
-        model.add(Dense(1, activation=None))
+        model = build_simple_rnn_model(memory_length, input_shape, activation,
+                                       batch_norm)
 
     model.compile(optimizer=optimizer, loss="mse", metrics=["mse"])
+
+    return model
+
+
+def build_lstm_model(memory_length,
+                     input_shape,
+                     activation='tanh',
+                     batch_norm=False):
+    """Returns a lstm model"""
+    model = Sequential()
+    model.add(
+        LSTM(memory_length,
+             input_shape=input_shape,
+             activation=activation,
+             return_sequences=True))
+    if batch_norm:
+        model.add(BatchNormalization())
+    model.add(LSTM(memory_length, activation=activation,
+                   return_sequences=True))
+    if batch_norm:
+        model.add(BatchNormalization())
+    model.add(LSTM(memory_length, activation=activation,
+                   return_sequences=True))
+    model.add(Dense(1, activation=None))
+
+    return model
+
+
+def build_simple_rnn_model(memory_length,
+                           input_shape,
+                           activation='tanh',
+                           batch_norm=False):
+    """Returns a simple rnn model"""
+    model = Sequential()
+    model.add(
+        SimpleRNN(memory_length,
+                  input_shape=input_shape,
+                  activation=activation,
+                  return_sequences=True))
+    if batch_norm:
+        model.add(BatchNormalization())
+    model.add(
+        SimpleRNN(memory_length, activation=activation, return_sequences=True))
+    if batch_norm:
+        model.add(BatchNormalization())
+    model.add(
+        SimpleRNN(memory_length, activation=activation, return_sequences=True))
+    model.add(Dense(1, activation=None))
+
+    return model
+
+
+def build_gru_model(memory_length,
+                    input_shape,
+                    activation='tanh',
+                    batch_norm=False):
+    """Returns a gru model"""
+    model = Sequential()
+    model.add(
+        GRU(memory_length,
+            input_shape=input_shape,
+            activation=activation,
+            return_sequences=True))
+    if batch_norm:
+        model.add(BatchNormalization())
+    model.add(GRU(memory_length, activation=activation, return_sequences=True))
+    if batch_norm:
+        model.add(BatchNormalization())
+    model.add(GRU(memory_length, activation=activation, return_sequences=True))
+    model.add(Dense(1, activation=None))
 
     return model
 

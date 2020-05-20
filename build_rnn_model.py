@@ -146,11 +146,11 @@ if __name__ == '__main__':
     memory_length = 15
     input_shape = (499, 1)
     rnn_layer = 'GRU'
-    activation_function = 'tanh'
+    activation = 'tanh'
     batch_norm = False
     optimizer = 'adam'
 
-    test_rnn = RNN(memory_length, input_shape, rnn_layer, acitvation,
+    test_rnn = RNN(memory_length, input_shape, rnn_layer, activation,
                    batch_norm, optimizer)
 
     rnn_model_history = test_rnn.train_rnn_model(x_train, y_train, batch_size,
@@ -159,3 +159,4 @@ if __name__ == '__main__':
     test_mse = test_rnn.evaluate_rnn_model(x_test, y_test, batch_size)
 
     print('Test MSE: {}'.format(test_mse))
+    # Test MSE: 0.05410613492131233

@@ -20,6 +20,7 @@ class RNN:
                  activation='tanh',
                  batch_norm=False,
                  optimizer='adam'):
+        """Initializes RNN class."""
         self.memory_length = memory_length
         self.input_shape = input_shape
         self.rnn_layer = rnn_layer
@@ -31,7 +32,6 @@ class RNN:
 
     def _build_rnn_model(self):
         """Returns a built and compiled rnn model"""
-
         if rnn_layer == 'LSTM':
             self.model = self._build_lstm_model()
         elif rnn_layer == 'GRU':

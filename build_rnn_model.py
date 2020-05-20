@@ -32,9 +32,9 @@ class RNN:
 
     def _build_rnn_model(self):
         """Returns a built and compiled rnn model"""
-        if rnn_layer == 'LSTM':
+        if self.rnn_layer == 'LSTM':
             self.model = self._build_lstm_model()
-        elif rnn_layer == 'GRU':
+        elif self.rnn_layer == 'GRU':
             self.model = self._build_gru_model()
         else:
             self.model = self._build_simple_rnn_model()
@@ -53,13 +53,13 @@ class RNN:
                  input_shape=self.input_shape,
                  activation=self.activation,
                  return_sequences=True))
-        if batch_norm:
+        if self.batch_norm:
             model.add(BatchNormalization())
         model.add(
             LSTM(self.memory_length,
                  activation=self.activation,
                  return_sequences=True))
-        if batch_norm:
+        if self.batch_norm:
             model.add(BatchNormalization())
         model.add(
             LSTM(self.memory_length,
@@ -77,13 +77,13 @@ class RNN:
                       input_shape=self.input_shape,
                       activation=self.activation,
                       return_sequences=True))
-        if batch_norm:
+        if self.batch_norm:
             model.add(BatchNormalization())
         model.add(
             SimpleRNN(self.memory_length,
                       activation=self.activation,
                       return_sequences=True))
-        if batch_norm:
+        if self.batch_norm:
             model.add(BatchNormalization())
         model.add(
             SimpleRNN(self.memory_length,
@@ -101,13 +101,13 @@ class RNN:
                 input_shape=self.input_shape,
                 activation=self.activation,
                 return_sequences=True))
-        if batch_norm:
+        if self.batch_norm:
             model.add(BatchNormalization())
         model.add(
             GRU(self.memory_length,
                 activation=self.activation,
                 return_sequences=True))
-        if batch_norm:
+        if self.batch_norm:
             model.add(BatchNormalization())
         model.add(
             GRU(self.memory_length,

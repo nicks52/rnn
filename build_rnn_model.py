@@ -127,13 +127,11 @@ class RNN:
 
         return model_history
 
-    def evaluate_rnn_model(self, train_model, x_test, y_test, batch_size):
-        """Returns score and MSE of the trained RNN model"""
-        score, mse = train_model.evaluate(x_test,
-                                          y_test,
-                                          batch_size=batch_size)
+    def evaluate_rnn_model(self, x_test, y_test, batch_size):
+        """Returns MSE of the trained RNN model"""
+        _, mse = self.model.evaluate(x_test, y_test, batch_size=batch_size)
 
-        return score, mse
+        return mse
 
 
 if __name__ == '__main__':

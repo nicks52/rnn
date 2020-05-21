@@ -18,11 +18,11 @@ def load_data(file_path, normalize_data=True, train_split=.66):
     """Load the data in the path provided.
 
     Arguments:
-      file_path: string, path to file to import
-      scale_data: boolean, whether the data should be scaled.
-      train_split: float between 0 and 1 that is the percent of the
-        data to be split as training data, the remaining data will
-        be used as test data.
+        file_path: string, path to file to import
+        scale_data: boolean, whether the data should be scaled.
+        train_split: float between 0 and 1 that is the percent of the
+            data to be split as training data, the remaining data will
+            be used as test data.
 
     Returns:
       Tuple of numpy arrays: (x_train, y_train), (x_test, y_test)

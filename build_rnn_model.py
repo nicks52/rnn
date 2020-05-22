@@ -32,9 +32,9 @@ class RNN:
 
     def _build_rnn_model(self):
         """Returns a built and compiled rnn model"""
-        if self.rnn_layer == 'LSTM':
+        if self.rnn_layer.lower() == 'lstm':
             self.model = self._build_lstm_model()
-        elif self.rnn_layer == 'GRU':
+        elif self.rnn_layer.lower() == 'gru':
             self.model = self._build_gru_model()
         else:
             self.model = self._build_simple_rnn_model()

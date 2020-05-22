@@ -19,7 +19,7 @@ def load_data(file_path, normalize_data=True, train_split=.66):
 
     Arguments:
         file_path: string, path to file to import
-        scale_data: boolean, whether the data should be scaled.
+        normalize_data: boolean, whether the data should be scaled.
         train_split: float between 0 and 1 that is the percent of the
             data to be split as training data, the remaining data will
             be used as test data.

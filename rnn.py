@@ -132,30 +132,3 @@ class RNN:
         _, mse = self.model.evaluate(x_test, y_test, batch_size=batch_size)
 
         return mse
-
-
-if __name__ == '__main__':
-    (x_train, y_train), (x_test,
-                         y_test) = load_rnn_data.load_data('data.npy',
-                                                           normalize_data=True,
-                                                           train_split=.66)
-
-    epochs = 40
-    batch_size = 5
-
-    memory_length = 15
-    input_shape = (499, 1)
-    rnn_layer = 'GRU'
-    activation = 'tanh'
-    batch_norm = False
-    optimizer = 'adam'
-
-    test_rnn = RNN(memory_length, input_shape, rnn_layer, activation,
-                   batch_norm, optimizer)
-
-    rnn_model_history = test_rnn.train_rnn_model(x_train, y_train, batch_size,
-                                                 epochs)
-
-    test_mse = test_rnn.evaluate_rnn_model(x_test, y_test, batch_size)
-
-    print('Test MSE: {}'.format(test_mse))

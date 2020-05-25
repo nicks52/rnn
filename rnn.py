@@ -14,15 +14,15 @@ import load_rnn_data
 
 class RNN:
     def __init__(self,
-                 memory_length,
                  input_shape,
+                 memory_length,
                  rnn_layer='LSTM',
                  activation='tanh',
                  batch_norm=False,
                  optimizer='adam'):
         """Initializes RNN class."""
-        self.memory_length = memory_length
         self.input_shape = input_shape
+        self.memory_length = memory_length
         self.rnn_layer = rnn_layer
         self.activation = activation
         self.batch_norm = batch_norm
@@ -73,7 +73,7 @@ class RNN:
         """Returns a simple rnn model."""
         model = Sequential()
         model.add(
-            SimpleRNN(memory_length,
+            SimpleRNN(self.memory_length,
                       input_shape=self.input_shape,
                       activation=self.activation,
                       return_sequences=True))
